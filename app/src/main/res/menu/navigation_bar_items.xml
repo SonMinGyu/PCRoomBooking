@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:enabled="true"
+        android:id="@+id/navigation_bar_Booking"
+        android:title="@string/Booking"
+        android:icon="@drawable/PC_booking_icon"/>
+    <item
+        android:enabled="true"
+        android:id="@+id/navigation_bar_Room"
+        android:title="@string/Room"
+        android:icon="@drawable/room_icon"/>
+    <item
+        android:enabled="true"
+        android:id="@+id/navigation_bar_MySeat"
+        android:title="@string/MySeat"
+        android:icon="@drawable/user_icon"/>
+    <item
+        android:enabled="true"
+        android:id="@+id/navigation_bar_Setting"
+        android:title="@string/Setting"
+        android:icon="@drawable/setting_icon"/>
+</menu>

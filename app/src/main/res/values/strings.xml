@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">PCRoomBooking</string>
+    <string name="Booking">Booking</string>
+    <string name="MySeat">My Seat</string>
+    <string name="Room">Room</string>
+    <string name="Setting">Setting</string>
+</resources>
