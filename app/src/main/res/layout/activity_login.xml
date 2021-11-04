@@ -68,6 +68,16 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/login_activity_login_button"
+        android:padding="3dp"
+        android:layout_marginTop="40dp"
+        android:textSize="20dp"
+        android:layout_gravity="center"
+        android:text="로그인"
+        android:layout_width="300dp"
+        android:layout_height="50dp" />
+
+    <Button
         android:id="@+id/login_activity_register_button"
         android:padding="3dp"
         android:layout_marginTop="40dp"

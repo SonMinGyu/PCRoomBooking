@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#CCE5FF"
+    android:orientation="vertical">
+
+    <TextView
+        android:background="#c0c0c0"
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textSize="20dp"
+        android:text="좌석 이용중"
+        android:layout_width="200dp"
+        android:layout_height="50dp" />
+
+    <LinearLayout
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center"
+        android:weightSum="14"
+        android:orientation="horizontal"
+        android:layout_width="300dp"
+        android:layout_height="50dp" >
+
+        <TextView
+            android:background="#e0e0e0"
+            android:id="@+id/fragment_myseat_locationTitle"
+            android:layout_weight="5"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:textSize="20dp"
+            android:text="좌석 위치"
+            android:padding="5dp"
+            android:textStyle="bold"
+            android:gravity="center" />
+
+        <TextView
+            android:background="#ffffff"
+            android:id="@+id/fragment_myseat_locationText"
+            android:padding="5dp"
+            android:gravity="center"
+            android:layout_weight="9"
+            android:layout_gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:text="208관 6층 PC실"
+            android:textSize="18dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center"
+        android:weightSum="14"
+        android:orientation="horizontal"
+        android:layout_width="300dp"
+        android:layout_height="50dp" >
+
+        <TextView
+            android:background="#e0e0e0"
+            android:id="@+id/fragment_myseat_infoTitle"
+            android:layout_weight="5"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:textSize="20dp"
+            android:text="좌석 정보"
+            android:padding="5dp"
+            android:textStyle="bold"
+            android:gravity="center" />
+
+        <TextView
+            android:background="#ffffff"
+            android:id="@+id/fragment_myseat_infoText"
+            android:padding="5dp"
+            android:gravity="center"
+            android:layout_weight="9"
+            android:layout_gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:text="A-13"
+            android:textSize="18dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center"
+        android:weightSum="14"
+        android:orientation="horizontal"
+        android:layout_width="300dp"
+        android:layout_height="50dp" >
+
+        <TextView
+            android:background="#e0e0e0"
+            android:id="@+id/fragment_myseat_usingTimeTitle"
+            android:layout_weight="5"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:textSize="16dp"
+            android:text="사용 시작시간"
+            android:padding="5dp"
+            android:textStyle="bold"
+            android:gravity="center" />
+
+        <TextView
+            android:background="#ffffff"
+            android:id="@+id/fragment_myseat_usingTimeText"
+            android:padding="5dp"
+            android:gravity="center"
+            android:layout_weight="9"
+            android:layout_gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:text="17시 30분"
+<!--            QR인증전-->
+            android:textSize="18dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center"
+        android:weightSum="14"
+        android:orientation="horizontal"
+        android:layout_width="300dp"
+        android:layout_height="50dp" >
+
+        <TextView
+            android:background="#e0e0e0"
+            android:id="@+id/fragment_myseat_expiredTimeTitle"
+            android:layout_weight="5"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:textSize="20dp"
+            android:text="종료 시간"
+            android:padding="5dp"
+            android:textStyle="bold"
+            android:gravity="center" />
+
+        <TextView
+            android:background="#ffffff"
+            android:id="@+id/fragment_myseat_expiredTimeText"
+            android:padding="5dp"
+            android:gravity="center"
+            android:layout_weight="9"
+            android:layout_gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:text="23시 30분"
+            android:textSize="18dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:padding="10dp"
+        android:layout_marginTop="65dp"
+        android:layout_gravity="center"
+        android:weightSum="10"
+        android:orientation="horizontal"
+        android:layout_width="300dp"
+        android:layout_height="70dp" >
+
+        <Button
+            android:layout_weight="4"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="좌석 연장"
+            android:textSize="16dp" />
+
+        <TextView
+            android:layout_weight="2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+
+        <Button
+            android:layout_weight="4"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="좌석 반납"
+            android:textSize="16dp" />
+
+
+    </LinearLayout>
+
+</LinearLayout>

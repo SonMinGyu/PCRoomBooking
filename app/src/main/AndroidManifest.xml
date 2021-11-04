@@ -3,13 +3,15 @@
     package="org.application.pcroombooking">
 
     <application
+        android:name=".retrofit.MasterApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PCRoomBooking">
-        <activity android:name=".RegisterActivity"></activity>
+        <activity android:name=".DetailActivity"></activity>
+        <activity android:name=".RegisterActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
