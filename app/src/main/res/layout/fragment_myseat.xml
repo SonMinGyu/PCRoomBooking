@@ -113,7 +113,6 @@
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:text="17시 30분"
-<!--            QR인증전-->
             android:textSize="18dp"/>
 
     </LinearLayout>

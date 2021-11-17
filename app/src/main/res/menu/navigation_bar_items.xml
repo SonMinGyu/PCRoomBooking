@@ -4,7 +4,7 @@
         android:enabled="true"
         android:id="@+id/navigation_bar_Booking"
         android:title="@string/Booking"
-        android:icon="@drawable/PC_booking_icon"/>
+        android:icon="@drawable/pc_booking_icon"/>
     <item
         android:enabled="true"
         android:id="@+id/navigation_bar_Room"

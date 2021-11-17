@@ -13,7 +13,7 @@
         android:layout_height="50dp"
         android:layout_gravity="center"
         android:layout_marginTop="80dp"
-        android:background="null"
+        android:background="@null"
         android:hint="학교 Email"
         android:padding="5dp"
         android:textSize="20dp" />
@@ -50,7 +50,7 @@
             android:padding="10dp"
             android:layout_gravity="center_vertical"
             android:hint="인증 문자열 입력"
-            android:background="null"
+            android:background="@null"
             android:layout_width="140dp"
             android:layout_height="40dp" />
 
@@ -70,7 +70,7 @@
         android:layout_height="50dp"
         android:layout_gravity="center"
         android:layout_marginTop="30dp"
-        android:background="null"
+        android:background="@null"
         android:hint="Password"
         android:padding="5dp"
         android:textSize="20dp" />
@@ -81,7 +81,7 @@
         android:layout_height="50dp"
         android:layout_gravity="center"
         android:layout_marginTop="30dp"
-        android:background="null"
+        android:background="@null"
         android:hint="Password 확인"
         android:padding="5dp"
         android:textSize="20dp" />

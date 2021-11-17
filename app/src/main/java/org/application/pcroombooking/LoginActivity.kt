@@ -9,12 +9,12 @@ import android.widget.TextView
 
 class LoginActivity : AppCompatActivity() {
 
-    lateinit var emailText: TextView
-    lateinit var passwordText: TextView
-    lateinit var emailSaveCheckBox: CheckBox
-    lateinit var autoLoginCheckBox: CheckBox
-    lateinit var loginButton: Button
-    lateinit var registerButton: Button
+    lateinit var loginActEmailText: TextView
+    lateinit var loginActPasswordText: TextView
+    lateinit var loginActEmailSaveCheckBox: CheckBox
+    lateinit var loginActAutoLoginCheckBox: CheckBox
+    lateinit var loginActLoginButton: Button
+    lateinit var loginActRegisterButton: Button
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,20 +26,20 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun initView(activity: Activity) {
-        emailText = activity.findViewById(R.id.login_activity_email)
-        passwordText = activity.findViewById(R.id.login_activity_password)
-        emailSaveCheckBox = activity.findViewById(R.id.login_activity_emailSave_checkBox)
-        autoLoginCheckBox = activity.findViewById(R.id.login_activity_autoLogin_checkBox)
-        loginButton = activity.findViewById(R.id.login_activity_login_button)
-        registerButton = activity.findViewById(R.id.login_activity_register_button)
+        loginActEmailText = activity.findViewById(R.id.login_activity_email)
+        loginActPasswordText = activity.findViewById(R.id.login_activity_password)
+        loginActEmailSaveCheckBox = activity.findViewById(R.id.login_activity_emailSave_checkBox)
+        loginActAutoLoginCheckBox = activity.findViewById(R.id.login_activity_autoLogin_checkBox)
+        loginActLoginButton = activity.findViewById(R.id.login_activity_login_button)
+        loginActRegisterButton = activity.findViewById(R.id.login_activity_register_button)
     }
 
     fun getEamil() : String {
-        return emailText.text.toString()
+        return loginActEmailText.text.toString()
     }
 
     fun getPassword() : String {
-        return passwordText.text.toString()
+        return loginActPasswordText.text.toString()
     }
 
 }
