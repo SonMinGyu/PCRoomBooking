@@ -36,8 +36,8 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        val sharedPref = this.getPreferences(0)
-        val sharedEditor = sharedPref.edit()
+        sharedPref = this.getPreferences(0)
+        sharedEditor = sharedPref.edit()
 
         val retrofitService: RetrofitService = MasterApplication.retrofitService
 
