@@ -5,8 +5,8 @@ import org.application.pcroombooking.dto.parents.ResponseParent
 
 data class EmailSendResponse(
     @SerializedName("httpStatus")
-    override val responseHttpStatus: Int,
-    override val responseCode: Int,
-    override val result: String,
-    override val responseMessage: String
-): ResponseParent(responseHttpStatus, responseCode, result, responseMessage)
+    val responseHttpStatus: Int,
+    val responseCode: Int,
+    val result: String,
+    val responseMessage: String
+)

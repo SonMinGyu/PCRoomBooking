@@ -60,20 +60,14 @@ class LoginActivity : AppCompatActivity() {
             register(this@LoginActivity)
         })
 
-        loginActEmailSaveCheckBox.setOnClickListener(View.OnClickListener {
-//            loginActEmailSaveCheckBox.isChecked = !loginActEmailSaveCheckBox.isChecked
-            loginActEmailSaveCheckBox.toggle()
-        })
-
-        loginActAutoLoginCheckBox.setOnClickListener(View.OnClickListener {
-            loginActAutoLoginCheckBox.toggle()
-            if(loginActAutoLoginCheckBox.isChecked) {
+        loginActAutoLoginCheckBox.setOnCheckedChangeListener{ view, isCheck ->
+            if(isCheck) {
                 loginActEmailSaveCheckBox.isChecked = true
-                loginActEmailSaveCheckBox.isEnabled = !loginActAutoLoginCheckBox.isChecked
+                loginActEmailSaveCheckBox.isEnabled = false
             } else {
-                loginActEmailSaveCheckBox.isEnabled = !loginActAutoLoginCheckBox.isChecked
+                loginActEmailSaveCheckBox.isEnabled = true
             }
-        })
+        }
 
     }
 
