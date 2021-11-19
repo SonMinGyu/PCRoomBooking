@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.util.Log
 import com.facebook.stetho.okhttp3.StethoInterceptor
+import com.google.gson.Gson
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -41,17 +42,18 @@ class MasterApplication : Application() {
             }
         }
 
+        val gson = Gson().newBuilder()
+            .setLenient()
+            .create()
+
         val client = OkHttpClient.Builder()
             .addInterceptor(header)
             .addNetworkInterceptor(StethoInterceptor())
-            .connectTimeout(100, TimeUnit.SECONDS)
-            .readTimeout(100, TimeUnit.SECONDS)
-            .writeTimeout(100, TimeUnit.SECONDS)
             .build()
 
         val retrofit = Retrofit.Builder()
             .baseUrl("http://10.0.2.2:8080/api/")
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .client(client)
             .build()
 

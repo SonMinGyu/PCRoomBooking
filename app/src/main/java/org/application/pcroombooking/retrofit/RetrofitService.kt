@@ -1,9 +1,7 @@
 package org.application.pcroombooking.retrofit
 
 import android.net.http.HttpResponseCache
-import org.application.pcroombooking.dto.EmailSendRequest
-import org.application.pcroombooking.dto.EmailSendResponse
-import org.application.pcroombooking.dto.User
+import org.application.pcroombooking.dto.*
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.FormUrlEncoded
@@ -18,11 +16,13 @@ interface RetrofitService {
 //    @POST("/api/register")
 //    fun register(): Call<HttpResponseCache>
 
-    @FormUrlEncoded
     @POST("user/register/mail")
     fun sendMail(@Body body: EmailSendRequest): Call<EmailSendResponse>
 
     @GET("user/test")
     fun test(): Call<String>
+
+    @POST("user/login")
+    fun login(@Body body: UserLoginRequest): Call<UserLoginResponse>
 
 }
