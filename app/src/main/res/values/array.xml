@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="spinner_major">
+        <item>학과를 선택하세요</item>
+        <item>컴퓨터공학과</item>
+        <item>소프트웨어학과</item>
+        <item>소프트웨어학부</item>
+        <item>AI학과</item>
+        <item>복수전공</item>
+    </string-array>
+
+    <string-array name="spinner_admissionNumber">
+        <item>입학년도를 선택하세요</item>
+        <item>2010</item>
+        <item>2011</item>
+        <item>2012</item>
+        <item>2013</item>
+        <item>2014</item>
+        <item>2015</item>
+        <item>2016</item>
+        <item>2017</item>
+        <item>2018</item>
+        <item>2019</item>
+        <item>2020</item>
+        <item>2021</item>
+        <item>2022</item>
+        <item>2023</item>
+        <item>2024</item>
+        <item>2025</item>
+        <item>2026</item>
+        <item>2027</item>
+        <item>2028</item>
+        <item>2029</item>
+        <item>2030</item>
+    </string-array>
+</resources>

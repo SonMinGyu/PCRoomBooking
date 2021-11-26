@@ -15,7 +15,7 @@
         android:layout_marginTop="80dp"
         android:inputType="textEmailAddress"
         android:background="@null"
-        android:hint="학교 Email"
+        android:hint="Email"
         android:padding="5dp"
         android:textSize="20dp" />
 
@@ -46,7 +46,7 @@
 
         <EditText
             android:layout_marginRight="20dp"
-            android:id="@+id/register_activity_textAuth"
+            android:id="@+id/register_activity_cryptogramText"
             android:textSize="16dp"
             android:padding="10dp"
             android:layout_gravity="center_vertical"
@@ -56,7 +56,7 @@
             android:layout_height="40dp" />
 
         <Button
-            android:id="@+id/register_activity_textAuth_button"
+            android:id="@+id/register_activity_cryptogramText_verify_button"
             android:text="인증"
             android:textSize="15dp"
             android:layout_gravity="center_vertical"
@@ -64,6 +64,17 @@
             android:layout_height="40dp" />
 
     </LinearLayout>
+
+    <EditText
+        android:id="@+id/register_activity_username"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:background="@null"
+        android:hint="Name"
+        android:padding="5dp"
+        android:textSize="20dp" />
 
     <EditText
         android:id="@+id/register_activity_password"

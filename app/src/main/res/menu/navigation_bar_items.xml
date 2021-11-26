@@ -2,22 +2,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:enabled="true"
-        android:id="@+id/navigation_bar_Booking"
+        android:id="@+id/navigation_bar_pcroom"
         android:title="@string/Booking"
         android:icon="@drawable/pc_booking_icon"/>
     <item
         android:enabled="true"
-        android:id="@+id/navigation_bar_Room"
+        android:id="@+id/navigation_bar_conferenceRoom"
         android:title="@string/Room"
         android:icon="@drawable/room_icon"/>
     <item
         android:enabled="true"
-        android:id="@+id/navigation_bar_MySeat"
+        android:id="@+id/navigation_bar_mySeat"
         android:title="@string/MySeat"
         android:icon="@drawable/user_icon"/>
     <item
         android:enabled="true"
-        android:id="@+id/navigation_bar_Setting"
+        android:id="@+id/navigation_bar_setting"
         android:title="@string/Setting"
         android:icon="@drawable/setting_icon"/>
 </menu>

@@ -19,8 +19,14 @@ interface RetrofitService {
     @POST("user/register/mail")
     fun sendMail(@Body body: EmailSendRequest): Call<EmailSendResponse>
 
-    @GET("user/test")
-    fun test(): Call<String>
+    @POST("user/register/cryptogram")
+    fun vefiryCryptogram(@Body body: CryptogramRequest): Call<CryptogramResponse>
+
+    @POST("user/register")
+    fun register(@Body body: UserRegisterRequest): Call<UserRegisterResponse>
+
+
+
 
     @POST("user/login")
     fun login(@Body body: UserLoginRequest): Call<UserLoginResponse>

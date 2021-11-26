@@ -50,18 +50,21 @@ class LoginActivity : AppCompatActivity() {
         // view에 setting
         getSettings()
         // emailSavedCheck 박스에 체크되어있으면 email 불러와서 setting
-        setEmail()
+        setEmailAndPassword()
 
         loginActLoginButton.setOnClickListener(View.OnClickListener {
-            login(retrofitService, this@LoginActivity, getEamilText().trim(), getPasswordText().trim())
+            login(retrofitService,
+                this@LoginActivity,
+                getEmailText().trim(),
+                getPasswordText().trim())
         })
 
         loginActRegisterButton.setOnClickListener(View.OnClickListener {
-            register(this@LoginActivity)
+            goRegister(this@LoginActivity)
         })
 
-        loginActAutoLoginCheckBox.setOnCheckedChangeListener{ view, isCheck ->
-            if(isCheck) {
+        loginActAutoLoginCheckBox.setOnCheckedChangeListener { view, isCheck ->
+            if (isCheck) {
                 loginActEmailSaveCheckBox.isChecked = true
                 loginActEmailSaveCheckBox.isEnabled = false
             } else {
@@ -81,14 +84,16 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun excuteAutoLogin(retrofitService: RetrofitService, activity: Activity) {
-        if(sharedPref.getBoolean("AutoLogin", false)) {
-            val sharedPreEmail = sharedPref.getString("Email", "null")
-            val sharedPrePassword = sharedPref.getString("Password", "null")
+        if (sharedPref.getBoolean("AutoLogin", false)) {
+            val sharedPreEmail = sharedPref.getString("Email", "")
+            val sharedPrePassword = sharedPref.getString("Password", "")
 
             if (sharedPreEmail != null && sharedPrePassword != null) {
+                Log.d("MainActivity", "$sharedPreEmail / $sharedPrePassword")
                 login(retrofitService, activity, sharedPreEmail, sharedPrePassword)
             } else {
-                Toast.makeText(activity, "로그인 정보 불러오기 실패! 다시 로그인을 진행해 주세요!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, "로그인 정보 불러오기 실패! 다시 로그인을 진행해 주세요!", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
     }
@@ -99,20 +104,28 @@ class LoginActivity : AppCompatActivity() {
 
         loginActEmailSaveCheckBox.isChecked = isSavedEmail
         loginActAutoLoginCheckBox.isChecked = isAutoLogin
+
+        if (isAutoLogin) {
+            loginActEmailSaveCheckBox.isEnabled = false
+        }
     }
 
-    fun setEmail() {
-        if(loginActEmailSaveCheckBox.isChecked) {
+    fun setEmailAndPassword() {
+        if (loginActEmailSaveCheckBox.isChecked) {
             val savedEmail = sharedPref.getString("Email", "")
             loginActEmailText.setText(savedEmail)
+        }
+        if(loginActAutoLoginCheckBox.isChecked) {
+            val savedPassword = sharedPref.getString("Password", "")
+            loginActPasswordText.setText(savedPassword)
         }
     }
 
     // login button 클릭시 작동
     fun saveEmail() {
         // email 저장 checkBox 처리
-        if(loginActEmailSaveCheckBox.isChecked) {
-            val getEmail: String = loginActEmailText.text.toString()
+        if (loginActEmailSaveCheckBox.isChecked) {
+            val getEmail: String = getEmailText()
             sharedEditor.putString("Email", getEmail).apply()
             sharedEditor.putBoolean("SaveEmail", true).apply()
         } else {
@@ -123,8 +136,8 @@ class LoginActivity : AppCompatActivity() {
 
     // login button 클릭시 작동
     fun saveAutoLogin() {
-        if(loginActAutoLoginCheckBox.isChecked) {
-            val getPassword: String = loginActPasswordText.text.toString()
+        if (loginActAutoLoginCheckBox.isChecked) {
+            val getPassword: String = getPasswordText()
             sharedEditor.putString("Password", getPassword).apply()
             sharedEditor.putBoolean("AutoLogin", true).apply()
         } else {
@@ -133,12 +146,17 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    fun register(activity: Activity) {
+    fun goRegister(activity: Activity) {
         val intent = Intent(activity, RegisterActivity::class.java)
         startActivity(intent)
     }
 
-    fun login(retrofitService: RetrofitService, activity: Activity, email: String, password: String) {
+    fun login(
+        retrofitService: RetrofitService,
+        activity: Activity,
+        email: String,
+        password: String,
+    ) {
         val userLoginRequest = UserLoginRequest(email, password)
 
         retrofitService.login(userLoginRequest)
@@ -183,6 +201,12 @@ class LoginActivity : AppCompatActivity() {
                             // autoLoginCheck 박스가 true면 emailSavedCheck 박스는 무조건 true로 설정되므로 email 자동저장
                             saveAutoLogin()
 
+                            Log.d("MainActivity",
+                                "saved email ${sharedPref.getString("Email", "")}")
+                            Log.d("MainActivity",
+                                "saved password ${sharedPref.getString("Password", "")}")
+
+
                             companionObjectAccessToken = accessToken
                             startActivity(intent)
                             activity.finish()
@@ -203,11 +227,11 @@ class LoginActivity : AppCompatActivity() {
             })
     }
 
-    fun getEamilText() : String {
+    fun getEmailText(): String {
         return loginActEmailText.text.toString()
     }
 
-    fun getPasswordText() : String {
+    fun getPasswordText(): String {
         return loginActPasswordText.text.toString()
     }
 

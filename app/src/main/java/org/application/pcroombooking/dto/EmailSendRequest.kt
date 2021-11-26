@@ -1,5 +1,5 @@
 package org.application.pcroombooking.dto
 
 data class EmailSendRequest(
-    val user_mail: String
+    val user_email: String
 )
