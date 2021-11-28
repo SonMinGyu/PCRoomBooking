@@ -25,6 +25,8 @@ interface RetrofitService {
     @POST("user/register")
     fun register(@Body body: UserRegisterRequest): Call<UserRegisterResponse>
 
+    @GET("pcroom")
+    fun getPCRoomList(): Call<PCRoomResponse>
 
 
 

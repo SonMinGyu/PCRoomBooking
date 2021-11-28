@@ -2,10 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:paddingRight="8dp"
+    android:paddingLeft="8dp">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/fragment_booking_recyclerView"
+        android:id="@+id/fragment_pcroom_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
