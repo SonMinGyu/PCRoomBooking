@@ -35,7 +35,7 @@ class RegisterActivity : AppCompatActivity() {
         val retrofitService: RetrofitService = MasterApplication.retrofitService
 
         initView(this@RegisterActivity)
-        settingView(this@RegisterActivity)
+        setSpinner(this@RegisterActivity)
 
         registerActUnivAuthButton.setOnClickListener(View.OnClickListener {
             sendMail(retrofitService, this@RegisterActivity)
@@ -66,7 +66,7 @@ class RegisterActivity : AppCompatActivity() {
             activity.findViewById(R.id.register_activity_admissionNumber_spinner)
     }
 
-    fun settingView(activity: Activity) {
+    fun setSpinner(activity: Activity) {
         registerActMajorSpinner.adapter = ArrayAdapter.createFromResource(activity,
             R.array.spinner_major,
             android.R.layout.simple_spinner_item)

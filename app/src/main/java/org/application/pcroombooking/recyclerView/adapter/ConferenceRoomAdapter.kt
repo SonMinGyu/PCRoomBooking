@@ -1,14 +1,18 @@
 package org.application.pcroombooking.recyclerView.adapter
 
+import android.app.Activity
+import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import org.application.pcroombooking.ConferenceRoomDetailActivity
 import org.application.pcroombooking.R
 import org.application.pcroombooking.domain.ConferenceRoom
 
-class ConferenceRoomAdapter(val conferenceRoomList: List<ConferenceRoom>):
+class ConferenceRoomAdapter(val conferenceRoomList: List<ConferenceRoom>, val activity: Activity):
     RecyclerView.Adapter<ConferenceRoomAdapter.Holder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -42,6 +46,16 @@ class ConferenceRoomAdapter(val conferenceRoomList: List<ConferenceRoom>):
             conferenceRoombuildingText.text = "${conferenceRoom.buildingNumber.toString()} 관"
             conferenceRoomLimitText.text = "${conferenceRoom.limit} 명"
             conferenceRoomLocationText.text = conferenceRoom.locationName
+
+            itemView.setOnClickListener {
+                val intent = Intent(activity, ConferenceRoomDetailActivity::class.java)
+                    .apply {
+                        putExtra("ConferenceRoomName", conferenceRoom.name)
+                        Log.d("ConferenceRoomName", "putExtra 실행")
+                        Log.d("ConferenceRoomName", conferenceRoom.name)
+                    }
+                activity.startActivity(intent)
+            }
         }
     }
 

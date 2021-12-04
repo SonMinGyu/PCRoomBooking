@@ -1,22 +1,30 @@
 package org.application.pcroombooking.fragment
 
+import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import org.application.pcroombooking.MainActivity
 import org.application.pcroombooking.R
 import org.application.pcroombooking.recyclerView.adapter.ConferenceRoomAdapter
 import org.application.pcroombooking.domain.ConferenceRoom
 import org.application.pcroombooking.domain.ConferenceRoomReservation
+import org.application.pcroombooking.dto.ConferenceRoomResponse
+import org.application.pcroombooking.dto.PCRoomResponse
 import org.application.pcroombooking.recyclerView.decorator.VerticalDecorator
 import org.application.pcroombooking.retrofit.MasterApplication
 import org.application.pcroombooking.retrofit.RetrofitService
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ConferenceRoomFragment: Fragment() {
 
@@ -24,8 +32,7 @@ class ConferenceRoomFragment: Fragment() {
     lateinit var conferenceRoomRecyclerView: RecyclerView
     lateinit var conferenceRoomLinearLayoutManager: LinearLayoutManager
     lateinit var conferenceRoomRecyclerViewAdapter: RecyclerView.Adapter<ConferenceRoomAdapter.Holder>
-    //    var fragmentConferenceRoomList: MutableList<PCRoom> = mutableListOf()
-    var fragmentConferenceRoomList2: MutableList<ConferenceRoom> = mutableListOf()
+    lateinit var conferenceRoomSwipeRefreshLayout: SwipeRefreshLayout
     val retrofitService: RetrofitService = MasterApplication.retrofitService
 
     override fun onAttach(context: Context) {
@@ -36,26 +43,6 @@ class ConferenceRoomFragment: Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        if(!fragmentPCRoomList.isNullOrEmpty()) {
-//            fragmentPCRoomList.clear()
-//        }
-//        getPCRoomList(retrofitService, mainActivity)
-
-        var reservation1 = ConferenceRoomReservation("팀플실 1", 208,
-            "6층 PC실", 6, 6, 14, 15, "son@naver.com")
-        var reservation2 = ConferenceRoomReservation("팀플실 1", 208,
-            "6층 PC실", 6, 6, 15, 16, "son@naver.com")
-        var reservation3 = ConferenceRoomReservation("팀플실 1", 208,
-            "6층 PC실", 6, 6, 16, 17, "son@naver.com")
-
-        var reservationList = mutableListOf<ConferenceRoomReservation>()
-        reservationList.add(reservation1)
-        reservationList.add(reservation2)
-        reservationList.add(reservation3)
-
-        var conferenceRoom = ConferenceRoom("팀플실 1", 208, "6층 PC실", 6, 6, reservationList, false, true)
-
-        fragmentConferenceRoomList2.add(conferenceRoom)
     }
 
     override fun onCreateView(
@@ -63,8 +50,11 @@ class ConferenceRoomFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
+        // view control
         val view = inflater.inflate(R.layout.fragment_conferenceroom, container, false)
-        conferenceRoomRecyclerView = view.findViewById(R.id.fragment_conferenceroom_recyclerView)
+        initView(view)
+        getConferenceRoomList(retrofitService)
+        conferenceRoomRecyclerView.addItemDecoration(VerticalDecorator(7))
 
         return view
     }
@@ -72,19 +62,69 @@ class ConferenceRoomFragment: Fragment() {
     override fun onStart() {
         super.onStart()
 
-        // view control
-        initView(fragmentConferenceRoomList2)
-
+        conferenceRoomSwipeRefreshLayout.setOnRefreshListener {
+            getConferenceRoomList(retrofitService)
+            conferenceRoomSwipeRefreshLayout.isRefreshing = false
+        }
     }
 
-    fun initView(fragmentConferenceRoomList: List<ConferenceRoom>) {
-        Log.d("MainActivity", "initView 실행")
-        conferenceRoomRecyclerViewAdapter = ConferenceRoomAdapter(fragmentConferenceRoomList)
+    fun initView(view: View) {
+        conferenceRoomRecyclerView = view.findViewById(R.id.fragment_conferenceroom_recyclerView)
+        conferenceRoomSwipeRefreshLayout = view.findViewById(R.id.fragment_conferenceroom_swipeRefreshLayout)
+    }
+
+    fun initRecyclerView(fragmentConferenceRoomList: List<ConferenceRoom>) {
+        conferenceRoomRecyclerViewAdapter = ConferenceRoomAdapter(fragmentConferenceRoomList, mainActivity)
         conferenceRoomLinearLayoutManager = LinearLayoutManager(mainActivity)
+        conferenceRoomRecyclerViewAdapter.notifyDataSetChanged()
 
         conferenceRoomRecyclerView.adapter = conferenceRoomRecyclerViewAdapter
         conferenceRoomRecyclerView.layoutManager = conferenceRoomLinearLayoutManager
-        conferenceRoomRecyclerView.addItemDecoration(VerticalDecorator(7))
         conferenceRoomRecyclerView.setHasFixedSize(true)
+    }
+
+    fun getConferenceRoomList(retrofitService: RetrofitService) {
+        retrofitService.getConferenceRoomList()
+            .enqueue(object : Callback<ConferenceRoomResponse> {
+                override fun onFailure(call: Call<ConferenceRoomResponse>, t: Throwable) {
+                    //todo 실패처리
+
+                    Log.d("ConferenceRoomFragment", "get conferenceroom onfailure: error by network!!!!!")
+                    Log.d("ConferenceRoomFragment", t.toString())
+                }
+
+                override fun onResponse(
+                    call: Call<ConferenceRoomResponse>,
+                    response: Response<ConferenceRoomResponse>,
+                ) {
+                    //todo 성공처리
+
+                    if (response.isSuccessful.not()) {
+                        return
+                    }
+
+                    response.body()?.let {
+                        if (it.responseHttpStatus == 200 && it.responseCode == 2006) {
+//                            fragmentConferenceRoomList.addAll(it.conferenceRooms)
+                            initRecyclerView(it.conferenceRooms)
+//                            Log.d("ConferenceRoomFragment", "retrofit" + fragmentConferenceRoomList.toString())
+                            Toast.makeText(mainActivity,
+                                it.responseMessage,
+                                Toast.LENGTH_SHORT).show()
+                        } else {
+                            Log.d("ConferenceRoomFragment", "get conferenceroom onfailure: error by server!!!!!")
+                            Log.d("ConferenceRoomFragment",
+                                "httpStatus " + it.responseHttpStatus.toString())
+                            Log.d("ConferenceRoomFragment", "responseCode " + it.responseCode.toString())
+                            Log.d("ConferenceRoomFragment", "result " + it.result)
+                            Log.d("ConferenceRoomFragment", "responseMessage" + it.responseMessage)
+
+                            Toast.makeText(mainActivity,
+                                it.responseMessage,
+                                Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            })
     }
 }

@@ -1,5 +1,6 @@
 package org.application.pcroombooking.recyclerView.adapter
 
+import android.app.Activity
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import org.application.pcroombooking.R
 import org.application.pcroombooking.domain.PCRoom
 
-class PCRoomAdapter(val pcroomList: List<PCRoom>):
+class PCRoomAdapter(val pcroomList: List<PCRoom>, val activity: Activity):
     RecyclerView.Adapter<PCRoomAdapter.Holder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {

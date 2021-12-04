@@ -1,10 +1,8 @@
 package org.application.pcroombooking.retrofit
 
-import android.net.http.HttpResponseCache
 import org.application.pcroombooking.dto.*
 import retrofit2.Call
 import retrofit2.http.Body
-import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
 
@@ -28,6 +26,11 @@ interface RetrofitService {
     @GET("pcroom")
     fun getPCRoomList(): Call<PCRoomResponse>
 
+    @GET("conferenceroom")
+    fun getConferenceRoomList(): Call<ConferenceRoomResponse>
+
+    @GET("conferenceroom/reservation")
+    fun getConferenceRoomReservationList(@Body body: ConferenceRoomReservationGetRequest): Call<ConferenceRoomReservationGetResponse>
 
 
     @POST("user/login")
