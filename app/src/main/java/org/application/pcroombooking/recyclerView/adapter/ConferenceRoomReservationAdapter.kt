@@ -1,26 +1,29 @@
 package org.application.pcroombooking.recyclerView.adapter
 
-import android.app.Activity
-import android.content.Intent
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import org.application.pcroombooking.ConferenceRoomDetailActivity
 import org.application.pcroombooking.R
-import org.application.pcroombooking.domain.ConferenceRoom
 import org.application.pcroombooking.domain.ConferenceRoomReservation
 
 class ConferenceRoomReservationAdapter(val conferenceRoomReservationList: List<ConferenceRoomReservation>) :
+
     RecyclerView.Adapter<ConferenceRoomReservationAdapter.Holder>() {
 
+    companion object {
+        var selectedReservation: MutableList<ConferenceRoomReservation> = mutableListOf()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        TODO("Not yet implemented")
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_conferenceroom_reservation, parent, false)
+        return Holder(view)
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        TODO("Not yet implemented")
+        holder.bind(conferenceRoomReservationList[position])
     }
 
     override fun getItemCount(): Int {
@@ -50,13 +53,14 @@ class ConferenceRoomReservationAdapter(val conferenceRoomReservationList: List<C
                 conferenceRoomReservationStatusText.text = "사용불가"
             }
 
-//            itemView.setOnClickListener {
-//                val intent = Intent(activity, ConferenceRoomDetailActivity::class.java)
-//                    .apply {
-//                        putExtra("ConferenceRoomName", conferenceRoom.name)
-//                    }
-//                activity.startActivity(intent)
-//            }
+            // checkBox를 체크하면 선택된 reservation을 selectedReservation에 추가
+            conferenceRoomReservationCheckbox.setOnCheckedChangeListener { view, isCheck ->
+                if(isCheck) {
+                    selectedReservation.add(ConferenceRoomReservation(conferenceRoomReservation.startTime, conferenceRoomReservation.endTime))
+                } else {
+                    selectedReservation.remove(ConferenceRoomReservation(conferenceRoomReservation.startTime, conferenceRoomReservation.endTime))
+                }
+            }
         }
     }
 }

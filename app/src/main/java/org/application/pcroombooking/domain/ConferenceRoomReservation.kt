@@ -3,8 +3,6 @@ package org.application.pcroombooking.domain
 data class ConferenceRoomReservation(
     var conferenceRoomName: String,
     var conferenceRoom: ConferenceRoom?,
-    var buildingNumber: Int,
-    var locationName: String,
     var date: String,
     var startTime: Int,
     var endTime: Int,
@@ -12,11 +10,9 @@ data class ConferenceRoomReservation(
     var reserved: Boolean,
     var enabled: Boolean
 ) {
-    constructor(conferenceRoomName: String, startTime: Int, endTime: Int): this(
-        conferenceRoomName,
-        null,
-        0,
+    constructor(startTime: Int, endTime: Int): this(
         "",
+        null,
         "",
         startTime,
         endTime,

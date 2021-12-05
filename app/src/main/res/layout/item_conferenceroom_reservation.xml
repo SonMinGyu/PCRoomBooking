@@ -25,6 +25,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:background="@drawable/selector"
         android:padding="5dp"
         android:orientation="horizontal"
         android:layout_weight="13"

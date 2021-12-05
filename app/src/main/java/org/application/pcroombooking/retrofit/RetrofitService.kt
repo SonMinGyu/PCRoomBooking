@@ -32,6 +32,9 @@ interface RetrofitService {
     @GET("conferenceroom/reservation")
     fun getConferenceRoomReservationList(@Body body: ConferenceRoomReservationGetRequest): Call<ConferenceRoomReservationGetResponse>
 
+    @POST("conferenceroom/reserve")
+    fun reserveConferenceRoomReservationList(@Body body: ConferenceRoomReservationAddRequestList): Call<ConferenceRoomReservationAddResponse>
+
 
     @POST("user/login")
     fun login(@Body body: UserLoginRequest): Call<UserLoginResponse>

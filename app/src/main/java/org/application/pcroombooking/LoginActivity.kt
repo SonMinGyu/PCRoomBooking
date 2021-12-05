@@ -20,6 +20,7 @@ class LoginActivity : AppCompatActivity() {
 
     companion object {
         lateinit var companionObjectAccessToken: String
+        lateinit var companionObjectLoginEmail: String
     }
 
     lateinit var loginActEmailText: EditText
@@ -208,6 +209,7 @@ class LoginActivity : AppCompatActivity() {
 
 
                             companionObjectAccessToken = accessToken
+                            companionObjectLoginEmail = sharedPref.getString("Email", "").toString()
                             startActivity(intent)
                             activity.finish()
 
