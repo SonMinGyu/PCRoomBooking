@@ -13,10 +13,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PCRoomBooking"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ConferenceRoomDetailActivity"></activity>
+        <activity android:name=".AdminAddPCRoomDetailActivity"></activity>
+        <activity android:name=".AdminAddPCRoomActivity" />
+        <activity android:name=".AdminAddPCRoomDialog" />
+        <activity android:name=".AdminPCRoomDetailActivity" />
+        <activity android:name=".AdminPCRoomActivity" />
+        <activity android:name=".PCRoomDetailActivity" />
+        <activity android:name=".ConferenceRoomDetailActivity" />
         <activity android:name=".DetailActivity" />
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".LoginActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

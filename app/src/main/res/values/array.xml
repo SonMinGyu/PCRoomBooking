@@ -57,134 +57,48 @@
         <item>12</item>
     </string-array>
 
-    <string-array name="spinner_conferenceRoom_detail_31day">
-        <item>01</item>
-        <item>02</item>
-        <item>03</item>
-        <item>04</item>
-        <item>05</item>
-        <item>06</item>
-        <item>07</item>
-        <item>08</item>
-        <item>09</item>
-        <item>10</item>
-        <item>11</item>
-        <item>12</item>
-        <item>13</item>
-        <item>14</item>
-        <item>15</item>
-        <item>16</item>
-        <item>17</item>
-        <item>18</item>
-        <item>19</item>
-        <item>20</item>
-        <item>21</item>
-        <item>22</item>
-        <item>23</item>
-        <item>24</item>
-        <item>25</item>
-        <item>26</item>
-        <item>27</item>
-        <item>28</item>
-        <item>29</item>
-        <item>30</item>
-        <item>31</item>
+    <string-array name="spinner_admin_add_pcroom_buildingNumber">
+        <item>학관 선택</item>
+        <item>208관</item>
+        <item>310관</item>
     </string-array>
 
-    <string-array name="spinner_conferenceRoom_detail_30day">
-        <item>01</item>
-        <item>02</item>
-        <item>03</item>
-        <item>04</item>
-        <item>05</item>
-        <item>06</item>
-        <item>07</item>
-        <item>08</item>
-        <item>09</item>
-        <item>10</item>
-        <item>11</item>
-        <item>12</item>
-        <item>13</item>
-        <item>14</item>
-        <item>15</item>
-        <item>16</item>
-        <item>17</item>
-        <item>18</item>
-        <item>19</item>
-        <item>20</item>
-        <item>21</item>
-        <item>22</item>
-        <item>23</item>
-        <item>24</item>
-        <item>25</item>
-        <item>26</item>
-        <item>27</item>
-        <item>28</item>
-        <item>29</item>
-        <item>30</item>
+    <string-array name="spinner_admin_add_pcroom_layer_no_choice">
+        <item>학관을 먼저 선택하세요</item>
     </string-array>
 
-    <string-array name="spinner_conferenceRoom_detail_29day">
-        <item>01</item>
-        <item>02</item>
-        <item>03</item>
-        <item>04</item>
-        <item>05</item>
-        <item>06</item>
-        <item>07</item>
-        <item>08</item>
-        <item>09</item>
-        <item>10</item>
-        <item>11</item>
-        <item>12</item>
-        <item>13</item>
-        <item>14</item>
-        <item>15</item>
-        <item>16</item>
-        <item>17</item>
-        <item>18</item>
-        <item>19</item>
-        <item>20</item>
-        <item>21</item>
-        <item>22</item>
-        <item>23</item>
-        <item>24</item>
-        <item>25</item>
-        <item>26</item>
-        <item>27</item>
-        <item>28</item>
-        <item>29</item>
+    <string-array name="spinner_admin_add_pcroom_layer_208">
+        <item>층 선택</item>
+        <item>6층</item>
+        <item>5층</item>
+        <item>4층</item>
+        <item>3층</item>
+        <item>2층</item>
+        <item>1층</item>
     </string-array>
 
-    <string-array name="spinner_conferenceRoom_detail_28day">
-        <item>01</item>
-        <item>02</item>
-        <item>03</item>
-        <item>04</item>
-        <item>05</item>
-        <item>06</item>
-        <item>07</item>
-        <item>08</item>
-        <item>09</item>
-        <item>10</item>
-        <item>11</item>
-        <item>12</item>
-        <item>13</item>
-        <item>14</item>
-        <item>15</item>
-        <item>16</item>
-        <item>17</item>
-        <item>18</item>
-        <item>19</item>
-        <item>20</item>
-        <item>21</item>
-        <item>22</item>
-        <item>23</item>
-        <item>24</item>
-        <item>25</item>
-        <item>26</item>
-        <item>27</item>
-        <item>28</item>
+    <string-array name="spinner_admin_add_pcroom_layer_310">
+        <item>층 선택</item>
+        <item>12층</item>
+        <item>11층</item>
+        <item>10층</item>
+        <item>9층</item>
+        <item>8층</item>
+        <item>7층</item>
+        <item>6층</item>
+        <item>5층</item>
+        <item>4층</item>
+        <item>3층</item>
+        <item>2층</item>
+        <item>1층</item>
+        <item>B1층</item>
+        <item>B2층</item>
+        <item>B3층</item>
+        <item>B4층</item>
+        <item>B5층</item>
+        <item>B6층</item>
     </string-array>
+
+
 
 </resources>

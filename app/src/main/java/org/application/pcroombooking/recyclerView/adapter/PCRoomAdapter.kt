@@ -1,12 +1,15 @@
 package org.application.pcroombooking.recyclerView.adapter
 
 import android.app.Activity
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import org.application.pcroombooking.ConferenceRoomDetailActivity
+import org.application.pcroombooking.PCRoomDetailActivity
 import org.application.pcroombooking.R
 import org.application.pcroombooking.domain.PCRoom
 
@@ -45,8 +48,16 @@ class PCRoomAdapter(val pcroomList: List<PCRoom>, val activity: Activity):
 
             pcroomPCSeatNumberText.text = "${pcroom.pcSeatNumber}/${(pcroom.pcSeatNumber - pcroom.pcSeatUseableNumber)}"
             pcroomNotebookSeatNumberText.text = "${pcroom.notebookSeatNumber}/${pcroom.notebookSeatNumber - pcroom.notebookSeatUseableNumber}"
+
+            itemView.setOnClickListener {
+                val intent = Intent(activity, PCRoomDetailActivity::class.java)
+                    .apply {
+                        putExtra("PCRoomName", pcroom.name)
+                        Log.d("PCRoomName", "PCRoom putExtra 실행")
+                        Log.d("PCRoomName", pcroom.name)
+                    }
+                activity.startActivity(intent)
+            }
         }
     }
-
-
 }

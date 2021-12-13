@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingRight="8dp"
+    android:paddingLeft="8dp"
+    android:weightSum="10">
+
+    <LinearLayout
+        android:gravity="center"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:weightSum="3">
+
+        <Button
+            android:id="@+id/activity_admin_pcroom_add_pcroom_button"
+            android:padding="5dp"
+            android:textSize="25dp"
+            android:text="PC실 추가"
+            android:layout_weight="2.5"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp" />
+
+    </LinearLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:layout_weight="9"
+        android:id="@+id/activity_admin_pcroom_swipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp" >
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/activity_admin_pcroom_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+</LinearLayout>

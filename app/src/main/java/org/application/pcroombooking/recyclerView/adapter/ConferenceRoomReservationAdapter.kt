@@ -46,6 +46,7 @@ class ConferenceRoomReservationAdapter(val conferenceRoomReservationList: List<C
             if(conferenceRoomReservation.enabled) {
                 if(conferenceRoomReservation.reserved) {
                     conferenceRoomReservationStatusText.text = "예약완료"
+                    conferenceRoomReservationCheckbox.isEnabled = false
                 } else {
                     conferenceRoomReservationStatusText.text = "예약가능"
                 }

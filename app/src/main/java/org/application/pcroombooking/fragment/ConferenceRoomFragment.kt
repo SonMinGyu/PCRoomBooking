@@ -3,6 +3,7 @@ package org.application.pcroombooking.fragment
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
+import android.telecom.Conference
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -26,7 +27,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ConferenceRoomFragment: Fragment() {
+class ConferenceRoomFragment : Fragment() {
 
     lateinit var mainActivity: MainActivity
     lateinit var conferenceRoomRecyclerView: RecyclerView
@@ -63,6 +64,7 @@ class ConferenceRoomFragment: Fragment() {
         super.onStart()
 
         conferenceRoomSwipeRefreshLayout.setOnRefreshListener {
+            conferenceRoomRecyclerView.adapter = null
             getConferenceRoomList(retrofitService)
             conferenceRoomSwipeRefreshLayout.isRefreshing = false
         }
@@ -70,13 +72,17 @@ class ConferenceRoomFragment: Fragment() {
 
     fun initView(view: View) {
         conferenceRoomRecyclerView = view.findViewById(R.id.fragment_conferenceroom_recyclerView)
-        conferenceRoomSwipeRefreshLayout = view.findViewById(R.id.fragment_conferenceroom_swipeRefreshLayout)
+        conferenceRoomSwipeRefreshLayout =
+            view.findViewById(R.id.fragment_conferenceroom_swipeRefreshLayout)
     }
 
     fun initRecyclerView(fragmentConferenceRoomList: List<ConferenceRoom>) {
-        conferenceRoomRecyclerViewAdapter = ConferenceRoomAdapter(fragmentConferenceRoomList, mainActivity)
+        conferenceRoomRecyclerViewAdapter =
+            ConferenceRoomAdapter(fragmentConferenceRoomList, mainActivity)
         conferenceRoomLinearLayoutManager = LinearLayoutManager(mainActivity)
         conferenceRoomRecyclerViewAdapter.notifyDataSetChanged()
+        conferenceRoomRecyclerViewAdapter.notifyItemRangeInserted(0, 16)
+        conferenceRoomRecyclerViewAdapter.notifyItemRangeRemoved(0, 16)
 
         conferenceRoomRecyclerView.adapter = conferenceRoomRecyclerViewAdapter
         conferenceRoomRecyclerView.layoutManager = conferenceRoomLinearLayoutManager
@@ -89,7 +95,8 @@ class ConferenceRoomFragment: Fragment() {
                 override fun onFailure(call: Call<ConferenceRoomResponse>, t: Throwable) {
                     //todo 실패처리
 
-                    Log.d("ConferenceRoomFragment", "get conferenceroom onfailure: error by network!!!!!")
+                    Log.d("ConferenceRoomFragment",
+                        "get conferenceroom onfailure: error by network!!!!!")
                     Log.d("ConferenceRoomFragment", t.toString())
                 }
 
@@ -112,12 +119,17 @@ class ConferenceRoomFragment: Fragment() {
                                 it.responseMessage,
                                 Toast.LENGTH_SHORT).show()
                         } else {
-                            Log.d("ConferenceRoomFragment", "get conferenceroom onfailure: error by server!!!!!")
+                            Log.d("ConferenceRoomFragment",
+                                "get conferenceroom onfailure: error by server!!!!!")
                             Log.d("ConferenceRoomFragment",
                                 "httpStatus " + it.responseHttpStatus.toString())
-                            Log.d("ConferenceRoomFragment", "responseCode " + it.responseCode.toString())
+                            Log.d("ConferenceRoomFragment",
+                                "responseCode " + it.responseCode.toString())
                             Log.d("ConferenceRoomFragment", "result " + it.result)
                             Log.d("ConferenceRoomFragment", "responseMessage" + it.responseMessage)
+
+                            var emptyConferenceRoomList = mutableListOf<ConferenceRoom>()
+                            initRecyclerView(emptyConferenceRoomList)
 
                             Toast.makeText(mainActivity,
                                 it.responseMessage,

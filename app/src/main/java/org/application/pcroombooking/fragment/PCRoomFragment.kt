@@ -63,6 +63,7 @@ class PCRoomFragment : Fragment() {
         super.onStart()
 
         pcroomSwipeRefreshLayout.setOnRefreshListener {
+            pcroomRecyclerView.adapter = null
             getPCRoomList(retrofitService)
             pcroomSwipeRefreshLayout.isRefreshing = false
         }
@@ -119,6 +120,8 @@ class PCRoomFragment : Fragment() {
                             Log.d("PCRoomFragment", "result " + it.result)
                             Log.d("PCRoomFragment", "responseMessage" + it.responseMessage)
 
+                            var emptyPCRoomList = mutableListOf<PCRoom>()
+                            initRecyclerView(emptyPCRoomList)
                             Toast.makeText(mainActivity,
                                 it.responseMessage,
                                 Toast.LENGTH_SHORT).show()

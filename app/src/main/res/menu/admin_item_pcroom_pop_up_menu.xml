@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/admin_item_pcroom_pop_up_menu_manage_pcroom"
+        android:title="PC실 관리" />
+    <item
+        android:id="@+id/admin_item_pcroom_pop_up_menu_remove_pcroom"
+        android:title="PC실 삭제" />
+    <item
+        android:id="@+id/admin_item_pcroom_pop_up_menu_change_status"
+        android:title="상태 변경" />
+</menu>

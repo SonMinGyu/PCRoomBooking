@@ -26,10 +26,13 @@ interface RetrofitService {
     @GET("pcroom")
     fun getPCRoomList(): Call<PCRoomResponse>
 
+    @POST("pcroom/add-pcroom")
+    fun addPCRoom(@Body body: PCRoomAddRequest): Call<PCRoomAddResponse>
+
     @GET("conferenceroom")
     fun getConferenceRoomList(): Call<ConferenceRoomResponse>
 
-    @GET("conferenceroom/reservation")
+    @POST("conferenceroom/reservation")
     fun getConferenceRoomReservationList(@Body body: ConferenceRoomReservationGetRequest): Call<ConferenceRoomReservationGetResponse>
 
     @POST("conferenceroom/reserve")

@@ -79,19 +79,37 @@ class ConferenceRoomDetailActivity : AppCompatActivity() {
         }
 
         conferenceRoomDetailActReserveButton.setOnClickListener {
-            var conferenceRoomReservationRequests: MutableList<ConferenceRoomReservationAddRequest> = mutableListOf()
-            for(i in 0 until selectedReservation.size) {
-                conferenceRoomReservationRequests.add(ConferenceRoomReservationAddRequest(conferenceRoomName, selectedDate,
-                    selectedReservation.get(i).startTime, selectedReservation.get(i).endTime,
-                    LoginActivity.companionObjectLoginEmail
-                ))
-            }
+            if (selectedReservation.size == 0) {
+                Toast.makeText(this@ConferenceRoomDetailActivity,
+                    "선택된 예약이 없습니다.",
+                    Toast.LENGTH_SHORT).show()
+            } else {
+                var conferenceRoomReservationRequests: MutableList<ConferenceRoomReservationAddRequest> =
+                    mutableListOf()
+                for (i in 0 until selectedReservation.size) {
+                    conferenceRoomReservationRequests.add(ConferenceRoomReservationAddRequest(
+                        conferenceRoomName,
+                        selectedDate,
+                        selectedReservation.get(i).startTime,
+                        selectedReservation.get(i).endTime,
+                        "littleking13@naver.com"
+                    ))
+                    // 나중에 로그인시 companionObject 사용하도록 수정
+                }
 
-            var conferenceRoomReservationAddRequestList = ConferenceRoomReservationAddRequestList(conferenceRoomReservationRequests)
-            reserveConferenceRoomReservation(retrofitService, this@ConferenceRoomDetailActivity, conferenceRoomReservationAddRequestList)
+                var conferenceRoomReservationAddRequestList =
+                    ConferenceRoomReservationAddRequestList(conferenceRoomReservationRequests)
+                reserveConferenceRoomReservation(retrofitService,
+                    this@ConferenceRoomDetailActivity,
+                    conferenceRoomReservationAddRequestList)
+            }
         }
 
-
+        conferenceRoomDetailActSwipeRefreshLayout.setOnRefreshListener {
+            conferenceRoomDetailActRecyclerView.adapter = null
+            getConferenceRoomReservation(retrofitService, this@ConferenceRoomDetailActivity)
+            conferenceRoomDetailActSwipeRefreshLayout.isRefreshing = false
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -100,7 +118,8 @@ class ConferenceRoomDetailActivity : AppCompatActivity() {
             activity.findViewById(R.id.activity_conferenceroom_detail_croomName_text)
         conferenceRoomDetailActDateText =
             activity.findViewById(R.id.activity_conferenceroom_detail_date_text)
-        conferenceRoomDetailActSwipeRefreshLayout = activity.findViewById(R.id.activity_conferenceroom_detail_swipeRefreshLayout)
+        conferenceRoomDetailActSwipeRefreshLayout =
+            activity.findViewById(R.id.activity_conferenceroom_detail_swipeRefreshLayout)
         conferenceRoomDetailActRecyclerView =
             activity.findViewById(R.id.activity_conferenceroom_detail_recyclerView)
         conferenceRoomDetailActReserveButton =
@@ -111,8 +130,8 @@ class ConferenceRoomDetailActivity : AppCompatActivity() {
         }
 
         var todayDate: LocalDate = LocalDate.now()
-        val formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")
-        val formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 d일")
+        val formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-d")
         val formattedDate = todayDate.format(formatter)
         selectedDate = todayDate.format(formatter2)
 
@@ -136,20 +155,26 @@ class ConferenceRoomDetailActivity : AppCompatActivity() {
     }
 
     fun initData() {
+        reservationData.clear()
         for (i in 0 until 16) {
-            reservationData.clear()
             reservationData.add(ConferenceRoomReservation(i + 8, i + 9))
         }
 
     }
 
     fun getConferenceRoomReservation(retrofitService: RetrofitService, activity: Activity) {
-        retrofitService.getConferenceRoomReservationList(ConferenceRoomReservationGetRequest(conferenceRoomName, selectedDate))
+        retrofitService.getConferenceRoomReservationList(ConferenceRoomReservationGetRequest(
+            conferenceRoomName,
+            selectedDate))
             .enqueue(object : Callback<ConferenceRoomReservationGetResponse> {
-                override fun onFailure(call: Call<ConferenceRoomReservationGetResponse>, t: Throwable) {
+                override fun onFailure(
+                    call: Call<ConferenceRoomReservationGetResponse>,
+                    t: Throwable,
+                ) {
                     //todo 실패처리
 
-                    Log.d("ConferenceRoomDetailAct", "get reservation onfailure: error by network!!!!!")
+                    Log.d("ConferenceRoomDetailAct",
+                        "get reservation onfailure: error by network!!!!!")
                     Log.d("ConferenceRoomDetailAct", t.toString())
                 }
 
@@ -167,17 +192,21 @@ class ConferenceRoomDetailActivity : AppCompatActivity() {
                         if (it.responseHttpStatus == 200 && it.responseCode == 2007) {
 
                             var dbConferenceRoomReservation = it.conferenceRoomReservations
-                            for(i in 0 .. dbConferenceRoomReservation.size) {
+                            for (i in 0 until dbConferenceRoomReservation.size) {
                                 reservationData.forEach {
-                                    if(it.startTime == dbConferenceRoomReservation.get(i).startTime) {
-                                        it.conferenceRoom = dbConferenceRoomReservation.get(i).conferenceRoom
+                                    if (it.startTime == dbConferenceRoomReservation.get(i).startTime) {
+                                        it.conferenceRoom =
+                                            dbConferenceRoomReservation.get(i).conferenceRoom
                                         it.date = dbConferenceRoomReservation.get(i).date
-                                        it.reservationEmail = dbConferenceRoomReservation.get(i).reservationEmail
+                                        it.reservationEmail =
+                                            dbConferenceRoomReservation.get(i).reservationEmail
                                         it.reserved = dbConferenceRoomReservation.get(i).reserved
                                         it.enabled = dbConferenceRoomReservation.get(i).enabled
                                     }
                                 }
                             }
+
+                            Log.d("ConferenceRoomDetailAct", reservationData.toString())
 
                             initRecyclerView(reservationData, activity)
 //                            Log.d("PCRoomFragment", "retrofit" + fragmentPCRoomList.toString())
@@ -185,12 +214,17 @@ class ConferenceRoomDetailActivity : AppCompatActivity() {
                                 it.responseMessage,
                                 Toast.LENGTH_SHORT).show()
                         } else {
-                            Log.d("ConferenceRoomDetailAct", "get reservation onfailure: error by server!!!!!")
+                            Log.d("ConferenceRoomDetailAct",
+                                "get reservation onfailure: error by server!!!!!")
                             Log.d("ConferenceRoomDetailAct",
                                 "httpStatus " + it.responseHttpStatus.toString())
-                            Log.d("ConferenceRoomDetailAct", "responseCode " + it.responseCode.toString())
+                            Log.d("ConferenceRoomDetailAct",
+                                "responseCode " + it.responseCode.toString())
                             Log.d("ConferenceRoomDetailAct", "result " + it.result)
                             Log.d("ConferenceRoomDetailAct", "responseMessage" + it.responseMessage)
+
+                            initData()
+                            initRecyclerView(reservationData, activity)
 
                             Toast.makeText(activity,
                                 it.responseMessage,
@@ -201,13 +235,21 @@ class ConferenceRoomDetailActivity : AppCompatActivity() {
             })
     }
 
-    fun reserveConferenceRoomReservation(retrofitService: RetrofitService, activity: Activity, conferenceRoomReservationAddRequestList: ConferenceRoomReservationAddRequestList) {
+    fun reserveConferenceRoomReservation(
+        retrofitService: RetrofitService,
+        activity: Activity,
+        conferenceRoomReservationAddRequestList: ConferenceRoomReservationAddRequestList,
+    ) {
         retrofitService.reserveConferenceRoomReservationList(conferenceRoomReservationAddRequestList)
             .enqueue(object : Callback<ConferenceRoomReservationAddResponse> {
-                override fun onFailure(call: Call<ConferenceRoomReservationAddResponse>, t: Throwable) {
+                override fun onFailure(
+                    call: Call<ConferenceRoomReservationAddResponse>,
+                    t: Throwable,
+                ) {
                     //todo 실패처리
 
-                    Log.d("ConferenceRoomDetailAct", "reserve reservation onfailure: error by network!!!!!")
+                    Log.d("ConferenceRoomDetailAct",
+                        "reserve reservation onfailure: error by network!!!!!")
                     Log.d("ConferenceRoomDetailAct", t.toString())
                 }
 
@@ -226,14 +268,19 @@ class ConferenceRoomDetailActivity : AppCompatActivity() {
 
                             selectedReservation.clear()
 
+                            conferenceRoomDetailActRecyclerView.adapter = null
+                            getConferenceRoomReservation(retrofitService, this@ConferenceRoomDetailActivity)
+
                             Toast.makeText(activity,
                                 it.responseMessage,
                                 Toast.LENGTH_SHORT).show()
                         } else {
-                            Log.d("ConferenceRoomDetailAct", "reserve reservation onfailure: error by server!!!!!")
+                            Log.d("ConferenceRoomDetailAct",
+                                "reserve reservation onfailure: error by server!!!!!")
                             Log.d("ConferenceRoomDetailAct",
                                 "httpStatus " + it.responseHttpStatus.toString())
-                            Log.d("ConferenceRoomDetailAct", "responseCode " + it.responseCode.toString())
+                            Log.d("ConferenceRoomDetailAct",
+                                "responseCode " + it.responseCode.toString())
                             Log.d("ConferenceRoomDetailAct", "result " + it.result)
                             Log.d("ConferenceRoomDetailAct", "responseMessage" + it.responseMessage)
 
