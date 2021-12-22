@@ -23,11 +23,31 @@ interface RetrofitService {
     @POST("user/register")
     fun register(@Body body: UserRegisterRequest): Call<UserRegisterResponse>
 
-    @GET("pcroom")
-    fun getPCRoomList(): Call<PCRoomResponse>
+
+
+
+    @GET("pcrooms")
+    fun getPCRoomList(): Call<PCRoomsResponse>
+
+    @POST("pcroom")
+    fun getPCRoom(@Body body: PCRoomGetRequest): Call<PCRoomGetResponse>
 
     @POST("pcroom/add-pcroom")
     fun addPCRoom(@Body body: PCRoomAddRequest): Call<PCRoomAddResponse>
+
+    @POST("pcroom/update-pcroom")
+    fun updatePCRoom(@Body body: PCRoomUpdateRequest): Call<PCRoomUpdateResponse>
+
+
+
+    @POST("pcroom/add-seat")
+    fun addSeat(@Body body: SeatAddRequest): Call<SeatAddResponse>
+
+    @POST("pcroom/update-seat")
+    fun updateSeat(@Body body: SeatUpdateRequest): Call<SeatUpdateResponse>
+
+
+
 
     @GET("conferenceroom")
     fun getConferenceRoomList(): Call<ConferenceRoomResponse>
@@ -37,6 +57,8 @@ interface RetrofitService {
 
     @POST("conferenceroom/reserve")
     fun reserveConferenceRoomReservationList(@Body body: ConferenceRoomReservationAddRequestList): Call<ConferenceRoomReservationAddResponse>
+
+
 
 
     @POST("user/login")

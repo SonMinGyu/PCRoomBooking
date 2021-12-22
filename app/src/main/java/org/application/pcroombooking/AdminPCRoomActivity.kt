@@ -4,16 +4,14 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import org.application.pcroombooking.domain.PCRoom
-import org.application.pcroombooking.dto.PCRoomResponse
+import org.application.pcroombooking.dto.PCRoomsResponse
 import org.application.pcroombooking.recyclerView.adapter.AdminPCRoomAdapter
-import org.application.pcroombooking.recyclerView.adapter.PCRoomAdapter
 import org.application.pcroombooking.recyclerView.decorator.VerticalDecorator
 import org.application.pcroombooking.retrofit.MasterApplication
 import org.application.pcroombooking.retrofit.RetrofitService
@@ -70,8 +68,8 @@ class AdminPCRoomActivity : AppCompatActivity() {
 
     fun getAdminPCRoomList(retrofitService: RetrofitService) {
         retrofitService.getPCRoomList()
-            .enqueue(object : Callback<PCRoomResponse> {
-                override fun onFailure(call: Call<PCRoomResponse>, t: Throwable) {
+            .enqueue(object : Callback<PCRoomsResponse> {
+                override fun onFailure(call: Call<PCRoomsResponse>, t: Throwable) {
                     //todo 실패처리
 
                     Log.d("AdminPCRoomActivity",
@@ -80,8 +78,8 @@ class AdminPCRoomActivity : AppCompatActivity() {
                 }
 
                 override fun onResponse(
-                    call: Call<PCRoomResponse>,
-                    response: Response<PCRoomResponse>,
+                    call: Call<PCRoomsResponse>,
+                    response: Response<PCRoomsResponse>,
                 ) {
                     //todo 성공처리
 

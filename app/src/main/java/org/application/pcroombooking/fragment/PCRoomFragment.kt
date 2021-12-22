@@ -1,6 +1,5 @@
 package org.application.pcroombooking.fragment
 
-import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -16,8 +15,7 @@ import org.application.pcroombooking.MainActivity
 import org.application.pcroombooking.R
 import org.application.pcroombooking.recyclerView.adapter.PCRoomAdapter
 import org.application.pcroombooking.domain.PCRoom
-import org.application.pcroombooking.domain.Seat
-import org.application.pcroombooking.dto.PCRoomResponse
+import org.application.pcroombooking.dto.PCRoomsResponse
 import org.application.pcroombooking.recyclerView.decorator.VerticalDecorator
 import org.application.pcroombooking.retrofit.MasterApplication
 import org.application.pcroombooking.retrofit.RetrofitService
@@ -86,8 +84,8 @@ class PCRoomFragment : Fragment() {
 
     fun getPCRoomList(retrofitService: RetrofitService) {
         retrofitService.getPCRoomList()
-            .enqueue(object : Callback<PCRoomResponse> {
-                override fun onFailure(call: Call<PCRoomResponse>, t: Throwable) {
+            .enqueue(object : Callback<PCRoomsResponse> {
+                override fun onFailure(call: Call<PCRoomsResponse>, t: Throwable) {
                     //todo 실패처리
 
                     Log.d("PCRoomFragment", "get pcroom onfailure: error by network!!!!!")
@@ -95,8 +93,8 @@ class PCRoomFragment : Fragment() {
                 }
 
                 override fun onResponse(
-                    call: Call<PCRoomResponse>,
-                    response: Response<PCRoomResponse>,
+                    call: Call<PCRoomsResponse>,
+                    response: Response<PCRoomsResponse>,
                 ) {
                     //todo 성공처리
 

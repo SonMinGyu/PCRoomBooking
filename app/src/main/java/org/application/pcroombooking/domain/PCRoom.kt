@@ -16,7 +16,7 @@ data class PCRoom(
     var notebookSeatBrokenNumber: Int,
     var notebookSeatInUseNumber: Int,
     var notebookSeatUseableNumber: Int,
-    var seats: MutableSet<Seat>,
+    var seats: MutableList<Seat>,
     var enabled: Boolean,
 //    var todayClass: List<String>
 )

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.application.pcroombooking">
+    package="org.application.pcroombooking"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:name=".retrofit.MasterApplication"
@@ -13,9 +15,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PCRoomBooking"
         android:usesCleartextTraffic="true">
+        <activity android:name="com.journeyapps.barcodescanner.CaptureActivity"
+            android:screenOrientation="fullSensor"
+            tools:replace="screenOrientation"/>
         <activity android:name=".AdminAddPCRoomDetailActivity"></activity>
         <activity android:name=".AdminAddPCRoomActivity" />
-        <activity android:name=".AdminAddPCRoomDialog" />
         <activity android:name=".AdminPCRoomDetailActivity" />
         <activity android:name=".AdminPCRoomActivity" />
         <activity android:name=".PCRoomDetailActivity" />

@@ -8,6 +8,8 @@ import android.widget.ImageButton
 import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.zxing.integration.android.IntentIntegrator
+import com.google.zxing.integration.android.IntentResult
 import org.application.pcroombooking.fragment.ConferenceRoomFragment
 import org.application.pcroombooking.fragment.MySeatFragment
 import org.application.pcroombooking.fragment.PCRoomFragment
@@ -16,7 +18,8 @@ import org.application.pcroombooking.fragment.SettingFragment
 class MainActivity : AppCompatActivity() {
 
     lateinit var mainActBottomNavigationBar: BottomNavigationView
-    lateinit var mainActAdminMenuButtom: ImageButton
+    lateinit var mainActAdminMenuButton: ImageButton
+    lateinit var mainActQRCodeButton: ImageButton
     val pcRoomFragment by lazy { PCRoomFragment() }
     val conferenceRoomFragment by lazy { ConferenceRoomFragment() }
     val mySeatFragment by lazy { MySeatFragment() }
@@ -49,7 +52,7 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
-        mainActAdminMenuButtom.setOnClickListener {
+        mainActAdminMenuButton.setOnClickListener {
             var adminPopUpMenu = PopupMenu(applicationContext, it)
             menuInflater.inflate(R.menu.admin_pop_up_menu, adminPopUpMenu.menu)
             adminPopUpMenu.setOnMenuItemClickListener {
@@ -75,17 +78,45 @@ class MainActivity : AppCompatActivity() {
             adminPopUpMenu.show()
         }
 
+        mainActQRCodeButton.setOnClickListener {
+            scanQRCode()
+        }
+
     }
 
     fun initView() {
         mainActBottomNavigationBar = findViewById(R.id.main_activity_bottomNavigation)
-        mainActAdminMenuButtom = findViewById(R.id.main_activity_adminMenu_button)
+        mainActAdminMenuButton = findViewById(R.id.main_activity_adminMenu_button)
+        mainActQRCodeButton = findViewById(R.id.main_activity_QRCode_button)
     }
 
     private fun replaceFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.main_activity_frameLayout, fragment)
             .commit()
+    }
+
+    fun scanQRCode(){
+        val integrator = IntentIntegrator(this)
+        integrator.setBeepEnabled(false)
+        integrator.setOrientationLocked(true)
+        integrator.setPrompt("QR코드를 찍어주세요.")
+        integrator.initiateScan()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        val result: IntentResult =
+            IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
+        if(result != null) {
+            if (result.contents == null) {
+                Log.e("this", "잘못된 QR코드입니다.")
+            } else {
+                Log.e("this", result.contents.toString())
+            }
+        }
+        else{
+            super.onActivityResult(requestCode, resultCode, data)
+        }
     }
 
 

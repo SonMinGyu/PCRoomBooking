@@ -1,9 +1,7 @@
 package org.application.pcroombooking.fragment
 
-import android.app.Activity
 import android.content.Context
 import android.os.Bundle
-import android.telecom.Conference
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -17,9 +15,7 @@ import org.application.pcroombooking.MainActivity
 import org.application.pcroombooking.R
 import org.application.pcroombooking.recyclerView.adapter.ConferenceRoomAdapter
 import org.application.pcroombooking.domain.ConferenceRoom
-import org.application.pcroombooking.domain.ConferenceRoomReservation
 import org.application.pcroombooking.dto.ConferenceRoomResponse
-import org.application.pcroombooking.dto.PCRoomResponse
 import org.application.pcroombooking.recyclerView.decorator.VerticalDecorator
 import org.application.pcroombooking.retrofit.MasterApplication
 import org.application.pcroombooking.retrofit.RetrofitService

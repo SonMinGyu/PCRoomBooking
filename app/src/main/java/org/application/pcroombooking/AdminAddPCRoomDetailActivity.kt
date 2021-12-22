@@ -14,10 +14,11 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import org.application.pcroombooking.domain.PCRoom
+import org.application.pcroombooking.domain.Seat
 import org.application.pcroombooking.dto.PCRoomAddRequest
 import org.application.pcroombooking.dto.PCRoomAddResponse
-import org.application.pcroombooking.dto.PCRoomResponse
+import org.application.pcroombooking.dto.SeatAddRequest
+import org.application.pcroombooking.dto.SeatAddResponse
 import org.application.pcroombooking.retrofit.MasterApplication
 import org.application.pcroombooking.retrofit.RetrofitService
 import retrofit2.Call
@@ -41,12 +42,15 @@ class AdminAddPCRoomDetailActivity : AppCompatActivity(), View.OnClickListener {
     var pcroomBuildingNumber: Int = 0
     var pcroomLayer: Int = 0
     var pcSeatNumber: Int = 0
-    var notebookSeatNumber: Int = 0 
+    var notebookSeatNumber: Int = 0
     var pcroomRow: Int = 0
     var pcroomLine: Int = 0
 
-    // 좌석 배치하는 list
+    // 좌석 배치하는 list, ui에 그리기 위해
     var seatList: MutableList<MutableList<String>> = mutableListOf()
+
+    // seat 객체들, 실제 db에 저장하기 위해
+    var seats: MutableList<Seat> = mutableListOf()
 
     var seatSize: Int = 100
     var seatGap: Int = 10
@@ -83,15 +87,15 @@ class AdminAddPCRoomDetailActivity : AppCompatActivity(), View.OnClickListener {
 //                view.id = seatNumberCount
                 view.setBackgroundResource(R.drawable.screen_icon)
                 view.tag = STATUS_PC_SEAT
-            } else if(view.tag == STATUS_PC_SEAT) {
+            } else if (view.tag == STATUS_PC_SEAT) {
 //                view.id = seatNumberCount
                 view.setBackgroundResource(R.drawable.notebook_icon)
                 view.tag = STATUS_NOTEBOOK_SEAT
-            } else if(view.tag == STATUS_NOTEBOOK_SEAT) {
+            } else if (view.tag == STATUS_NOTEBOOK_SEAT) {
 //                view.id = seatNumberCount
                 view.setBackgroundColor(Color.TRANSPARENT)
                 view.tag = STATUS_NULL
-            } else if(view.tag == STATUS_NULL) {
+            } else if (view.tag == STATUS_NULL) {
 //                view.id = seatNumberCount
                 view.setBackgroundResource(R.drawable.empty_seat_icon)
                 view.tag = STATUS_EMPTY_SEAT
@@ -102,14 +106,18 @@ class AdminAddPCRoomDetailActivity : AppCompatActivity(), View.OnClickListener {
 
     fun initView() {
         layout = findViewById(R.id.activity_admin_add_pcroom_detail_horizontal_scrollView)
-        adminAddPCRoomDetailPCRoomName = findViewById(R.id.activity_admin_add_pcroom_detail_pcroomName)
-        adminAddPCRoomDetailPCRoomRestPC = findViewById(R.id.activity_admin_add_pcroom_detail_restPC)
-        adminAddPCRoomDetailPCRoomRestNotebook = findViewById(R.id.activity_admin_add_pcroom_detail_restNotebook)
-        adminAddPCRoomDetailPCRoomSaveButton = findViewById(R.id.activity_admin_add_pcroom_detail_save_button)
+        adminAddPCRoomDetailPCRoomName =
+            findViewById(R.id.activity_admin_add_pcroom_detail_pcroomName)
+        adminAddPCRoomDetailPCRoomRestPC =
+            findViewById(R.id.activity_admin_add_pcroom_detail_restPC)
+        adminAddPCRoomDetailPCRoomRestNotebook =
+            findViewById(R.id.activity_admin_add_pcroom_detail_restNotebook)
+        adminAddPCRoomDetailPCRoomSaveButton =
+            findViewById(R.id.activity_admin_add_pcroom_detail_save_button)
     }
 
     fun getIntentValue(actIntent: Intent) {
-        if(actIntent.hasExtra("CreatePCRoomPCRoomName")) {
+        if (actIntent.hasExtra("CreatePCRoomPCRoomName")) {
             pcroomName = actIntent.getStringExtra("CreatePCRoomPCRoomName").toString()
         }
         pcSeatNumber = actIntent.getIntExtra("CreatePCRoomPCSeat", 0)
@@ -117,18 +125,20 @@ class AdminAddPCRoomDetailActivity : AppCompatActivity(), View.OnClickListener {
         pcroomLine = actIntent.getIntExtra("CreatePCRoomLine", 0)
         pcroomRow = actIntent.getIntExtra("CreatePCRoomRow", 0)
 
-        if(actIntent.hasExtra("CreatePCRoomBuildingNumber")) {
-            var pcroomBuildingNumberStr = actIntent.getStringExtra("CreatePCRoomBuildingNumber").toString()
+        if (actIntent.hasExtra("CreatePCRoomBuildingNumber")) {
+            var pcroomBuildingNumberStr =
+                actIntent.getStringExtra("CreatePCRoomBuildingNumber").toString()
             var pcroomBuildingNumberList = pcroomBuildingNumberStr.split("관")
             pcroomBuildingNumber = pcroomBuildingNumberList[0].toInt()
         }
 
-        if(actIntent.hasExtra("CreatePCRoomLayer")) {
+        if (actIntent.hasExtra("CreatePCRoomLayer")) {
             var pcroomLayerStr = actIntent.getStringExtra("CreatePCRoomLayer").toString()
             var pcroomLayerList = pcroomLayerStr.split("층")
-            if(pcroomLayerList[0].startsWith("B")) {
-                pcroomLayerList[0].replace("B", "-")
-                pcroomLayer = pcroomLayerList[0].toInt()
+            if (pcroomLayerList[0].startsWith("B")) {
+                var temp = pcroomLayerList[0].replace("B", "-")
+                pcroomLayer = temp.toInt()
+                Log.d("PCRoomDetailActivity", pcroomLayer.toString())
             } else {
                 pcroomLayer = pcroomLayerList[0].toInt()
             }
@@ -147,9 +157,9 @@ class AdminAddPCRoomDetailActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     fun initSeatList() {
-        for(i in 0 until pcroomRow) {
+        for (i in 0 until pcroomRow) {
             var tempList: MutableList<String> = mutableListOf()
-            for(j in 0 until pcroomLine) {
+            for (j in 0 until pcroomLine) {
                 tempList.add("E")
             }
             seatList.add(tempList)
@@ -162,12 +172,12 @@ class AdminAddPCRoomDetailActivity : AppCompatActivity(), View.OnClickListener {
 
         var seatNumberCount: Int = 0
 
-        for(row in seatList) {
+        for (row in seatList) {
             newLayout = LinearLayout(activity)
             newLayout.orientation = LinearLayout.HORIZONTAL
             seatLayout.addView(newLayout)
 
-            for(seat in row) {
+            for (seat in row) {
                 if (seat == "E") {
                     seatNumberCount++
                     val view = TextView(this)
@@ -204,18 +214,41 @@ class AdminAddPCRoomDetailActivity : AppCompatActivity(), View.OnClickListener {
 
     fun saveSeats() {
         var seatStr = ""
-        for(view in seatViewList) {
+
+        var count = 0
+        for (view in seatViewList) {
             seatStr += view.tag.toString()
+            if (view.tag == "P" || view.tag == "B") {
+                count++
+                Log.d("AdminAddPCRoomDetailAct", pcroomName)
+                seats.add(Seat(
+                    pcroomName,
+                    "${pcroomName}-${count}",
+                    "null",
+                    view.tag.toString(),
+                    false,
+                    false,
+                    true))
+            }
         }
 
         Log.d("AdminAddPCRoomDetailAct", seatStr)
 
-        addPCRoom(retrofitService, seatStr)
+        addPCRoom(retrofitService, seatStr, seats)
     }
 
-    fun addPCRoom(retrofitService: RetrofitService, seatsStr: String) {
-        val addPCRoomRequest = PCRoomAddRequest(pcroomName, pcroomBuildingNumber,
-            pcroomLayer, pcroomLine, pcroomRow, seatsStr, pcSeatNumber + notebookSeatNumber, pcSeatNumber, notebookSeatNumber, true)
+    fun addPCRoom(retrofitService: RetrofitService, seatsStr: String, seats: MutableList<Seat>) {
+        val addPCRoomRequest = PCRoomAddRequest(pcroomName,
+            pcroomBuildingNumber,
+            pcroomLayer,
+            pcroomLine,
+            pcroomRow,
+            seatsStr,
+            pcSeatNumber + notebookSeatNumber,
+            pcSeatNumber,
+            notebookSeatNumber,
+            seats,
+            true)
 
         retrofitService.addPCRoom(addPCRoomRequest)
             .enqueue(object : Callback<PCRoomAddResponse> {
@@ -240,14 +273,75 @@ class AdminAddPCRoomDetailActivity : AppCompatActivity(), View.OnClickListener {
                         if (it.responseHttpStatus == 200 && it.responseCode == 2009) {
 //                            fragmentPCRoomList.addAll(it.pcRooms)
 //                            Log.d("PCRoomFragment", "retrofit" + fragmentPCRoomList.toString())
+
+                            addSeat(retrofitService, pcroomName, seats)
+
                             Toast.makeText(this@AdminAddPCRoomDetailActivity,
                                 it.responseMessage,
                                 Toast.LENGTH_SHORT).show()
                         } else {
-                            Log.d("AdminAddPCRoomDetailAct", "add pcroom onfailure: error by server!!!!!")
+                            Log.d("AdminAddPCRoomDetailAct",
+                                "add pcroom onfailure: error by server!!!!!")
                             Log.d("AdminAddPCRoomDetailAct",
                                 "httpStatus " + it.responseHttpStatus.toString())
-                            Log.d("AdminAddPCRoomDetailAct", "responseCode " + it.responseCode.toString())
+                            Log.d("AdminAddPCRoomDetailAct",
+                                "responseCode " + it.responseCode.toString())
+                            Log.d("AdminAddPCRoomDetailAct", "result " + it.result)
+                            Log.d("AdminAddPCRoomDetailAct", "responseMessage" + it.responseMessage)
+
+                            Toast.makeText(this@AdminAddPCRoomDetailActivity,
+                                it.responseMessage,
+                                Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            })
+    }
+
+    fun addSeat(retrofitService: RetrofitService, pcroomName: String, seats: MutableList<Seat>) {
+        // pcroom 찾아서 seat update
+        // user의 seat에 예약한 seat 넣어주기
+        // booked와 inuse 구별하기
+        // 예약할때 예약하기 하면 예약만추가 -> user booked에 추가
+        // 예약할때 바로사용 하면 qr코드 넘어가기 -> user inuse에 추가
+        // 함수 나누기(updatePCRoom, bookSeat, inuseSeat)
+
+        // 나중에 로그인부터 할 때에는 companion object에서 userEmail 가져오기
+
+        val seatAddResponse = SeatAddRequest(pcroomName, seats)
+
+        retrofitService.addSeat(seatAddResponse)
+            .enqueue(object : Callback<SeatAddResponse> {
+                override fun onFailure(call: Call<SeatAddResponse>, t: Throwable) {
+                    //todo 실패처리
+
+                    Log.d("AdminAddPCRoomDetailAct", "add seats onfailure: error by network!!!!!")
+                    Log.d("AdminAddPCRoomDetailAct", t.toString())
+                }
+
+                override fun onResponse(
+                    call: Call<SeatAddResponse>,
+                    response: Response<SeatAddResponse>,
+                ) {
+                    //todo 성공처리
+
+                    if (response.isSuccessful.not()) {
+                        return
+                    }
+
+                    response.body()?.let {
+                        if (it.responseHttpStatus == 200 && it.responseCode == 2012) {
+
+                            Toast.makeText(this@AdminAddPCRoomDetailActivity,
+                                it.responseMessage,
+                                Toast.LENGTH_SHORT).show()
+                        } else {
+                            Log.d("AdminAddPCRoomDetailAct",
+                                "add seats pcroom onfailure: error by server!!!!!")
+                            Log.d("AdminAddPCRoomDetailAct",
+                                "httpStatus " + it.responseHttpStatus.toString())
+                            Log.d("AdminAddPCRoomDetailAct",
+                                "responseCode " + it.responseCode.toString())
                             Log.d("AdminAddPCRoomDetailAct", "result " + it.result)
                             Log.d("AdminAddPCRoomDetailAct", "responseMessage" + it.responseMessage)
 

@@ -12,5 +12,6 @@ data class PCRoomAddRequest(
     var allSeatNumber: Int,
     var pcSeatNumber: Int,
     var notebookSeatNumber: Int,
+    var seats: MutableList<Seat>,
     var enabled: Boolean,
 )

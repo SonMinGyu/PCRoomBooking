@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#f2dddd"
+    android:orientation="vertical">
+
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:columnCount="3"
+        android:orientation="horizontal"
+        android:paddingLeft="30dp"
+        android:paddingTop="30dp"
+        android:paddingRight="30dp">
+
+        <TextView
+            android:layout_gravity="fill_vertical|fill_horizontal"
+            android:background="#fdab22"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="PC실: "
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/dialog_reserve_pc_seat_confirm_pcroomName"
+            android:layout_columnSpan="2"
+            android:layout_gravity="fill_vertical|fill_horizontal"
+            android:background="@color/teal_200"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="6층 PC실"
+            android:textSize="25dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_gravity="fill_horizontal|fill_vertical"
+            android:background="#fdab22"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="좌석종류: "
+            android:textSize="20dp" />
+
+
+        <TextView
+            android:id="@+id/dialog_reserve_pc_seat_confirm_seatType"
+            android:layout_width="match_parent"
+            android:layout_columnSpan="2"
+            android:layout_gravity="fill_horizontal|fill_vertical"
+            android:background="@color/teal_200"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="PC"
+            android:textSize="25dp" />
+
+        <TextView
+            android:layout_gravity="fill_horizontal|fill_vertical"
+            android:background="#fdab22"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="좌석이름: "
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/dialog_reserve_pc_seat_confirm_seatName"
+            android:layout_width="match_parent"
+            android:layout_columnSpan="2"
+            android:layout_gravity="fill_horizontal|fill_vertical"
+            android:background="@color/teal_200"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="A-15"
+            android:textSize="25dp" />
+
+
+        <TextView android:text="" />
+
+        <TextView android:text="                              " />
+
+        <TextView android:text="                              " />
+
+    </GridLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:weightSum="16">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5">
+
+            <Button
+                android:id="@+id/dialog_reserve_pc_seat_confirm_cancel_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="취소"
+                android:textSize="20dp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="0.5" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:gravity="right">
+
+            <Button
+                android:id="@+id/dialog_reserve_pc_seat_confirm_reserve_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="예약"
+                android:textSize="20dp" />
+
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="6dp"
+            android:layout_weight="0.5" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:gravity="right">
+
+            <Button
+                android:id="@+id/dialog_reserve_pc_seat_confirm_use_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="사용"
+                android:textSize="20dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
