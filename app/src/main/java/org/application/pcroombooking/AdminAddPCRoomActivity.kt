@@ -6,6 +6,16 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
+import org.application.pcroombooking.domain.Seat
+import org.application.pcroombooking.dto.PCRoomInspectionRequest
+import org.application.pcroombooking.dto.PCRoomInspectionResponse
+import org.application.pcroombooking.dto.SeatAddRequest
+import org.application.pcroombooking.dto.SeatAddResponse
+import org.application.pcroombooking.retrofit.MasterApplication
+import org.application.pcroombooking.retrofit.RetrofitService
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class AdminAddPCRoomActivity : AppCompatActivity() {
 
@@ -18,6 +28,8 @@ class AdminAddPCRoomActivity : AppCompatActivity() {
     lateinit var adminAddPCRoomPCRoomRowPicker: NumberPicker
     lateinit var adminAddPCRoomCancelButton: Button
     lateinit var adminAddPCRoomOkButton: Button
+
+    val retrofitService: RetrofitService = MasterApplication.retrofitService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,17 +95,9 @@ class AdminAddPCRoomActivity : AppCompatActivity() {
 
         adminAddPCRoomOkButton.setOnClickListener {
             Log.d("AdminAddPCRoomActivity", "OK button clicked")
-            var intent = Intent(this, AdminAddPCRoomDetailActivity::class.java)
-                .apply {
-                    putExtra("CreatePCRoomPCRoomName", adminAddPCRoomPCRoomNameEdit.text.toString())
-                    putExtra("CreatePCRoomBuildingNumber", adminAddPCRoomBuildingSpinner.selectedItem.toString())
-                    putExtra("CreatePCRoomLayer", adminAddPCRoomLayerSpinner.selectedItem.toString())
-                    putExtra("CreatePCRoomPCSeat", adminAddPCRoomPCSeatNumberPicker.value)
-                    putExtra("CreatePCRoomNotebookSeat", adminAddPCRoomNotebookNumberPicker.value)
-                    putExtra("CreatePCRoomLine", adminAddPCRoomPCRoomLinePicker.value)
-                    putExtra("CreatePCRoomRow", adminAddPCRoomPCRoomRowPicker.value)
-                }
-            startActivity(intent)
+
+            inspectionPCRoomName(retrofitService, adminAddPCRoomPCRoomNameEdit.text.toString())
+
         }
 
         adminAddPCRoomBuildingSpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
@@ -118,6 +122,67 @@ class AdminAddPCRoomActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    fun inspectionPCRoomName(retrofitService: RetrofitService, pcroomName: String) {
+
+        val pcroomInspectionRequest = PCRoomInspectionRequest(pcroomName)
+
+        retrofitService.inspectionPCRoom(pcroomInspectionRequest)
+            .enqueue(object : Callback<PCRoomInspectionResponse> {
+                override fun onFailure(call: Call<PCRoomInspectionResponse>, t: Throwable) {
+                    //todo 실패처리
+
+                    Log.d("AdminAddPCRoomActivity", "inspection pcroom onfailure: error by network!!!!!")
+                    Log.d("AdminAddPCRoomActivity", t.toString())
+                }
+
+                override fun onResponse(
+                    call: Call<PCRoomInspectionResponse>,
+                    response: Response<PCRoomInspectionResponse>,
+                ) {
+                    //todo 성공처리
+
+                    if (response.isSuccessful.not()) {
+                        return
+                    }
+
+                    response.body()?.let {
+                        if (it.responseHttpStatus == 200 && it.responseCode == 2014) {
+
+                            var intent = Intent(this@AdminAddPCRoomActivity, AdminAddPCRoomDetailActivity::class.java)
+                                .apply {
+                                    putExtra("CreatePCRoomPCRoomName", adminAddPCRoomPCRoomNameEdit.text.toString())
+                                    putExtra("CreatePCRoomBuildingNumber", adminAddPCRoomBuildingSpinner.selectedItem.toString())
+                                    putExtra("CreatePCRoomLayer", adminAddPCRoomLayerSpinner.selectedItem.toString())
+                                    putExtra("CreatePCRoomPCSeat", adminAddPCRoomPCSeatNumberPicker.value)
+                                    putExtra("CreatePCRoomNotebookSeat", adminAddPCRoomNotebookNumberPicker.value)
+                                    putExtra("CreatePCRoomLine", adminAddPCRoomPCRoomLinePicker.value)
+                                    putExtra("CreatePCRoomRow", adminAddPCRoomPCRoomRowPicker.value)
+                                }
+                            startActivity(intent)
+                            finish()
+                            Toast.makeText(this@AdminAddPCRoomActivity,
+                                it.responseMessage,
+                                Toast.LENGTH_SHORT).show()
+
+                        } else {
+                            Log.d("AdminAddPCRoomDetailAct",
+                                "inspection pcroom onfailure: error by server!!!!!")
+                            Log.d("AdminAddPCRoomDetailAct",
+                                "httpStatus " + it.responseHttpStatus.toString())
+                            Log.d("AdminAddPCRoomDetailAct",
+                                "responseCode " + it.responseCode.toString())
+                            Log.d("AdminAddPCRoomDetailAct", "result " + it.result)
+                            Log.d("AdminAddPCRoomDetailAct", "responseMessage" + it.responseMessage)
+
+                            Toast.makeText(this@AdminAddPCRoomActivity,
+                                it.responseMessage,
+                                Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            })
     }
 
 }

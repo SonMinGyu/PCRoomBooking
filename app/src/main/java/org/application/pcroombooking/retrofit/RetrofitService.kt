@@ -38,14 +38,23 @@ interface RetrofitService {
     @POST("pcroom/update-pcroom")
     fun updatePCRoom(@Body body: PCRoomUpdateRequest): Call<PCRoomUpdateResponse>
 
+    @POST("pcroom/inspection")
+    fun inspectionPCRoom(@Body body: PCRoomInspectionRequest): Call<PCRoomInspectionResponse>
 
 
+    // 구현 중, 추후 주소 수정
+    @POST("pcroom/update")
+    fun updateSelectSeat(@Body body: SeatBookOrUseRequest): Call<SeatBookOrUseResponse>
+
+
+
+    ////////////////////
     @POST("pcroom/add-seat")
     fun addSeat(@Body body: SeatAddRequest): Call<SeatAddResponse>
 
     @POST("pcroom/update-seat")
     fun updateSeat(@Body body: SeatUpdateRequest): Call<SeatUpdateResponse>
-
+    ////////////////////
 
 
 

@@ -332,12 +332,13 @@ class AdminAddPCRoomDetailActivity : AppCompatActivity(), View.OnClickListener {
                     response.body()?.let {
                         if (it.responseHttpStatus == 200 && it.responseCode == 2012) {
 
+                            finish()
                             Toast.makeText(this@AdminAddPCRoomDetailActivity,
                                 it.responseMessage,
                                 Toast.LENGTH_SHORT).show()
                         } else {
                             Log.d("AdminAddPCRoomDetailAct",
-                                "add seats pcroom onfailure: error by server!!!!!")
+                                "add seats onfailure: error by server!!!!!")
                             Log.d("AdminAddPCRoomDetailAct",
                                 "httpStatus " + it.responseHttpStatus.toString())
                             Log.d("AdminAddPCRoomDetailAct",

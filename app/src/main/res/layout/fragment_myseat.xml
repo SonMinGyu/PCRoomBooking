@@ -6,6 +6,7 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/fragment_myseat_status"
         android:background="#c0c0c0"
         android:layout_marginTop="50dp"
         android:gravity="center"
@@ -93,7 +94,7 @@
 
         <TextView
             android:background="#e0e0e0"
-            android:id="@+id/fragment_myseat_usingTimeTitle"
+            android:id="@+id/fragment_myseat_startTimeTitle"
             android:layout_weight="5"
             android:layout_width="0dp"
             android:layout_height="50dp"
@@ -105,7 +106,7 @@
 
         <TextView
             android:background="#ffffff"
-            android:id="@+id/fragment_myseat_usingTimeText"
+            android:id="@+id/fragment_myseat_startTimeText"
             android:padding="5dp"
             android:gravity="center"
             android:layout_weight="9"
@@ -161,6 +162,7 @@
         android:layout_height="70dp" >
 
         <Button
+            android:id="@+id/framgent_myseat_seatExtension_button"
             android:layout_weight="4"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -173,6 +175,7 @@
             android:layout_height="match_parent" />
 
         <Button
+            android:id="@+id/fragment_myseat_seatReturn_button"
             android:layout_weight="4"
             android:layout_width="0dp"
             android:layout_height="match_parent"

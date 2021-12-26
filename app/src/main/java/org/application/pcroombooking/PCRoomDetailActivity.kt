@@ -352,7 +352,7 @@ class PCRoomDetailActivity : AppCompatActivity(), View.OnClickListener {
             })
     }
 
-    fun scanQRCode(){
+    fun scanQRCode() {
         val integrator = IntentIntegrator(this)
         integrator.setBeepEnabled(false)
         integrator.setOrientationLocked(true)

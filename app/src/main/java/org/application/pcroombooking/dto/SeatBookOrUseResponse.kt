@@ -3,8 +3,8 @@ package org.application.pcroombooking.dto
 import com.google.gson.annotations.SerializedName
 import org.application.pcroombooking.domain.Seat
 
-data class SeatUpdateResponse(
-    val seats: MutableList<Seat>,
+data class SeatBookOrUseResponse(
+    val seat: Seat,
     @SerializedName("httpStatus")
     val responseHttpStatus: Int,
     val responseCode: Int,

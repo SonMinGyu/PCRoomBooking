@@ -1,10 +1,9 @@
 package org.application.pcroombooking.dto
 
 import com.google.gson.annotations.SerializedName
-import org.application.pcroombooking.domain.Seat
+import org.application.pcroombooking.domain.PCRoom
 
-data class SeatUpdateResponse(
-    val seats: MutableList<Seat>,
+data class PCRoomInspectionResponse(
     @SerializedName("httpStatus")
     val responseHttpStatus: Int,
     val responseCode: Int,

@@ -46,7 +46,14 @@ class CustomDialog(context: Context) {
         onClickedListener = listener
     }
 
-    fun showDialog(pcroomName: String, pcroomType: String, seatName: String, seatViewList: MutableList<TextView>, viewId: Int, activity: Activity) {
+    fun showDialog(
+        pcroomName: String,
+        pcroomType: String,
+        seatName: String,
+        seatViewList: MutableList<TextView>,
+        viewId: Int,
+        activity: Activity,
+    ) {
         dialog.setContentView(R.layout.dialog_reserve_pc_seat_confirm)
         dialog.window!!.setLayout(WindowManager.LayoutParams.WRAP_CONTENT,
             WindowManager.LayoutParams.WRAP_CONTENT)
@@ -88,77 +95,96 @@ class CustomDialog(context: Context) {
     }
 
     // dialog에서 예약 버튼을 눌렀을 때 실행하는 함수
-    fun bookSeat(seatViewList: MutableList<TextView>, pcroomName: String, activity: Activity, viewId: Int) {
+    fun bookSeat(
+        seatViewList: MutableList<TextView>,
+        pcroomName: String,
+        activity: Activity,
+        viewId: Int,
+    ) {
         var updateSeatName = ""
         var updateViewTag = ""
-        var seatStr = ""
+        var seatsStr = ""
 
         var count = 0
         for (view in seatViewList) {
             if (view.tag == STATUS_PC_SEAT || view.tag == STATUS_NOTEBOOK_SEAT
                 || view.tag == STATUS_BOOKED_PC_SEAT || view.tag == STATUS_INUSE_PC_SEAT
-                || view.tag == STATUS_BOOKED_NOTEBOOK_SEAT || view.tag == STATUS_INUSE_NOTEBOOK_SEAT) {
+                || view.tag == STATUS_BOOKED_NOTEBOOK_SEAT || view.tag == STATUS_INUSE_NOTEBOOK_SEAT
+            ) {
                 count++
             }
 
-            if(view.id == viewId) {
-                if(view.tag == STATUS_PC_SEAT) {
+            if (view.id == viewId) {
+                if (view.tag == STATUS_PC_SEAT) {
                     view.tag = STATUS_BOOKED_PC_SEAT
-                } else if(view.tag == STATUS_NOTEBOOK_SEAT) {
+                } else if (view.tag == STATUS_NOTEBOOK_SEAT) {
                     view.tag = STATUS_BOOKED_NOTEBOOK_SEAT
                 }
                 updateSeatName = "${pcroomName}-${count}"
                 updateViewTag = view.tag.toString()
             }
-            seatStr += view.tag.toString()
+            seatsStr += view.tag.toString()
         }
 
         // pcroom의 seats 정보를 update -> booked = true
         // seatList와 seats 모두 업데이트해야함
-        updatePCRoom(retrofitService, pcroomName, seatStr, updateSeatName, "son@naver.com", updateViewTag, true, false, activity)
+        // 나중에 로그인부터 할 때에는 companion object에서 userEmail 가져오기
+//        updateSeat(retrofitService,
+//            pcroomName,
+//            updateSeatName,
+//            "son@naver.com",
+//            updateViewTag,
+//            true,
+//            false,
+//            seatViewList,
+//            viewId,
+//            activity)
+
+        bookOrUseSeat(retrofitService, pcroomName, updateSeatName, "littleking13@naver.com", updateViewTag, true, false, seatsStr, activity)
 
     }
 
     // dialog에서 사용 버튼을 눌렀을 때 실행하는 함수, 바로 QR코드 화면으로 넘어가야함, QR정상 작동하면 정보 업데이트 및 추가
-    fun useSeat(seatViewList: MutableList<TextView>, pcroomName: String, activity: Activity, viewId: Int) {
-        var updateSeatName = ""
-        var updateViewTag = ""
-        var seatStr = ""
+//    fun useSeat(seatViewList: MutableList<TextView>, pcroomName: String, activity: Activity, viewId: Int) {
+//        var updateSeatName = ""
+//        var updateViewTag = ""
+//        var seatStr = ""
+//
+//        var count = 0
+//        for (view in seatViewList) {
+//            if (view.tag == STATUS_PC_SEAT || view.tag == STATUS_NOTEBOOK_SEAT) {
+//                count++
+//            }
+//
+//            if(view.id == viewId) {
+//                if(view.tag == STATUS_PC_SEAT) {
+//                    view.tag = STATUS_INUSE_PC_SEAT
+//                } else if(view.tag == STATUS_NOTEBOOK_SEAT) {
+//                    view.tag = STATUS_INUSE_NOTEBOOK_SEAT
+//                }
+//                updateSeatName = "${pcroomName}-${count}"
+//                updateViewTag = view.tag.toString()
+//            }
+//            seatStr += view.tag.toString()
+//        }
+//
+//        // pcroom의 seats 정보를 update -> booked = true
+//        // seatList와 seats 모두 업데이트해야함
+//
+//        updatePCRoom(retrofitService, pcroomName, seatStr, updateSeatName, "son@naver.com", updateViewTag, true, true, activity)
+//
+//    }
 
-        var count = 0
-        for (view in seatViewList) {
-            if (view.tag == STATUS_PC_SEAT || view.tag == STATUS_NOTEBOOK_SEAT) {
-                count++
-            }
-
-            if(view.id == viewId) {
-                if(view.tag == STATUS_PC_SEAT) {
-                    view.tag = STATUS_INUSE_PC_SEAT
-                } else if(view.tag == STATUS_NOTEBOOK_SEAT) {
-                    view.tag = STATUS_INUSE_NOTEBOOK_SEAT
-                }
-                updateSeatName = "${pcroomName}-${count}"
-                updateViewTag = view.tag.toString()
-            }
-            seatStr += view.tag.toString()
-        }
-
-        // pcroom의 seats 정보를 update -> booked = true
-        // seatList와 seats 모두 업데이트해야함
-        updatePCRoom(retrofitService, pcroomName, seatStr, updateSeatName, "son@naver.com", updateViewTag, true, true, activity)
-
-    }
-
-    // 20211217 seat 업데이트 하는 함수부터 작성하기, 현재 seats 정상적으로 추가됨
-    fun updatePCRoom(
+    fun updateSeat(
         retrofitService: RetrofitService,
         pcroomName: String,
-        seatsStr: String,
         seatName: String,
         userEmail: String,
         viewTag: String,
         booked: Boolean,
         inuse: Boolean,
+        seatViewList: MutableList<TextView>,
+        viewId: Int,
         activity: Activity,
     ) {
         // pcroom 찾아서 seat update
@@ -166,62 +192,9 @@ class CustomDialog(context: Context) {
         // booked와 inuse 구별하기
         // 예약할때 예약하기 하면 예약만추가 -> user booked에 추가
         // 예약할때 바로사용 하면 qr코드 넘어가기 -> user inuse에 추가
-        // 함수 나누기(updatePCRoom, bookSeat, inuseSeat)
-        val updatePCRoomRequest = PCRoomUpdateRequest(pcroomName, seatsStr, seatName, userEmail, viewTag, booked, inuse)
 
-        retrofitService.updatePCRoom(updatePCRoomRequest)
-            .enqueue(object : Callback<PCRoomUpdateResponse> {
-                override fun onFailure(call: Call<PCRoomUpdateResponse>, t: Throwable) {
-                    //todo 실패처리
-
-                    Log.d("CustomDialog", "update pcroom onfailure: error by network!!!!!")
-                    Log.d("CustomDialog", t.toString())
-                }
-
-                override fun onResponse(
-                    call: Call<PCRoomUpdateResponse>,
-                    response: Response<PCRoomUpdateResponse>,
-                ) {
-                    //todo 성공처리
-
-                    if (response.isSuccessful.not()) {
-                        return
-                    }
-
-                    response.body()?.let {
-                        if (it.responseHttpStatus == 200 && it.responseCode == 2011) {
-                            updateSeat(retrofitService, pcroomName, seatName, "son@naver.com", viewTag, booked, inuse, activity)
-                            Toast.makeText(activity,
-                                it.responseMessage,
-                                Toast.LENGTH_SHORT).show()
-                        } else {
-                            Log.d("CustomDialog", "update pcroom onfailure: error by server!!!!!")
-                            Log.d("CustomDialog",
-                                "httpStatus " + it.responseHttpStatus.toString())
-                            Log.d("CustomDialog", "responseCode " + it.responseCode.toString())
-                            Log.d("CustomDialog", "result " + it.result)
-                            Log.d("CustomDialog", "responseMessage" + it.responseMessage)
-
-                            Toast.makeText(activity,
-                                it.responseMessage,
-                                Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                }
-            })
-    }
-
-    fun updateSeat(retrofitService: RetrofitService, pcroomName: String, seatName: String, userEmail: String, viewTag: String ,booked: Boolean, inuse:Boolean, activity: Activity) {
-        // pcroom 찾아서 seat update
-        // user의 seat에 예약한 seat 넣어주기
-        // booked와 inuse 구별하기
-        // 예약할때 예약하기 하면 예약만추가 -> user booked에 추가
-        // 예약할때 바로사용 하면 qr코드 넘어가기 -> user inuse에 추가
-        // 함수 나누기(updatePCRoom, bookSeat, inuseSeat)
-
-        // 나중에 로그인부터 할 때에는 companion object에서 userEmail 가져오기
-
-        val seatUpdateResponse = SeatUpdateRequest(pcroomName, seatName, userEmail, viewTag, booked, inuse)
+        val seatUpdateResponse =
+            SeatUpdateRequest(pcroomName, seatName, userEmail, viewTag, booked, inuse)
 
         retrofitService.updateSeat(seatUpdateResponse)
             .enqueue(object : Callback<SeatUpdateResponse> {
@@ -245,15 +218,32 @@ class CustomDialog(context: Context) {
                     response.body()?.let {
                         if (it.responseHttpStatus == 200 && it.responseCode == 2013) {
 
-                            // inuse가 false 이면 booked, true 이면 use
-                            onClickedListener.resultData(inuse)
-                            dialog.dismiss()
+                            // seat db 업데이트 성공 후 seatViewList에 반영하고 seatStr 생성, 인자로 넘김
+                            var seatStr = ""
+                            for (view in seatViewList) {
+                                if (view.id == viewId) {
+                                    if (view.tag == STATUS_PC_SEAT) {
+                                        view.tag = STATUS_BOOKED_PC_SEAT
+                                    } else if (view.tag == STATUS_NOTEBOOK_SEAT) {
+                                        view.tag = STATUS_BOOKED_NOTEBOOK_SEAT
+                                    }
+                                }
+                                seatStr += view.tag.toString()
+                            }
+
+                            updatePCRoom(retrofitService,
+                                pcroomName,
+                                inuse,
+                                it.seats,
+                                seatStr,
+                                activity)
 
                             Toast.makeText(activity,
                                 it.responseMessage,
                                 Toast.LENGTH_SHORT).show()
                         } else {
-                            Log.d("CustomDialog", "update seat pcroom onfailure: error by server!!!!!")
+                            Log.d("CustomDialog",
+                                "update seat pcroom onfailure: error by server!!!!!")
                             Log.d("CustomDialog",
                                 "httpStatus " + it.responseHttpStatus.toString())
                             Log.d("CustomDialog", "responseCode " + it.responseCode.toString())
@@ -269,5 +259,155 @@ class CustomDialog(context: Context) {
             })
     }
 
+    fun updatePCRoom(
+        retrofitService: RetrofitService,
+        pcroomName: String,
+        inuse: Boolean,
+        seats: MutableList<Seat>,
+        seatStr: String,
+        activity: Activity,
+    ) {
+        // pcroom 찾아서 seat update
+        // user의 seat에 예약한 seat 넣어주기
+        // booked와 inuse 구별하기
+        // 예약할때 예약하기 하면 예약만추가 -> user booked에 추가
+        // 예약할때 바로사용 하면 qr코드 넘어가기 -> user inuse에 추가
+
+//        var tempSeatStr: String = ""
+//        for (seat in seats) {
+//            tempSeatStr += seat.seatType
+//        }
+
+//        Log.d("CustomDialog", "tempSeatStr: ${tempSeatStr}")
+//        Log.d("CustomDialog", "seatStr: ${tempSeatStr}")
+
+        val updatePCRoomRequest = PCRoomUpdateRequest(
+            pcroomName,
+            seatStr,
+            seats,
+        )
+
+        retrofitService.updatePCRoom(updatePCRoomRequest)
+            .enqueue(object : Callback<PCRoomUpdateResponse> {
+                override fun onFailure(call: Call<PCRoomUpdateResponse>, t: Throwable) {
+                    //todo 실패처리
+
+                    Log.d("CustomDialog", "update pcroom onfailure: error by network!!!!!")
+                    Log.d("CustomDialog", t.toString())
+                }
+
+                override fun onResponse(
+                    call: Call<PCRoomUpdateResponse>,
+                    response: Response<PCRoomUpdateResponse>,
+                ) {
+                    //todo 성공처리
+
+                    if (response.isSuccessful.not()) {
+                        return
+                    }
+
+                    response.body()?.let {
+                        if (it.responseHttpStatus == 200 && it.responseCode == 2011) {
+
+                            // inuse가 false 이면 booked, true 이면 use
+                            onClickedListener.resultData(inuse)
+                            dialog.dismiss()
+
+                            Toast.makeText(activity,
+                                it.responseMessage,
+                                Toast.LENGTH_SHORT).show()
+                        } else {
+                            Log.d("CustomDialog", "update pcroom onfailure: error by server!!!!!")
+                            Log.d("CustomDialog",
+                                "httpStatus " + it.responseHttpStatus.toString())
+                            Log.d("CustomDialog", "responseCode " + it.responseCode.toString())
+                            Log.d("CustomDialog", "result " + it.result)
+                            Log.d("CustomDialog", "responseMessage" + it.responseMessage)
+
+                            Toast.makeText(activity,
+                                it.responseMessage,
+                                Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            })
+    }
+
+    fun bookOrUseSeat(
+        retrofitService: RetrofitService,
+        pcroomName: String,
+        seatName: String,
+        userEmail: String,
+        viewTag: String,
+        booked: Boolean,
+        inuse: Boolean,
+        seatsStr: String,
+        activity: Activity,
+    ) {
+        // 하나의 request로 모두 update
+        // 1. seatRepository 업데이트
+        // 2. userRepository 업데이트
+        // 3. pcRoomRepository 업데이트
+
+
+        Log.d("CustomDialog", "pcroomName" + pcroomName)
+        Log.d("CustomDialog", "seatName" + seatName)
+        val seatBookOrUseRequest = SeatBookOrUseRequest(
+            pcroomName,
+            seatName,
+            userEmail,
+            viewTag,
+            booked,
+            inuse,
+            seatsStr
+        )
+
+        Log.d("CustomDialog", "pcroomName" + seatBookOrUseRequest.pcroomName)
+        Log.d("CustomDialog", "seatName" + seatBookOrUseRequest.seatName)
+        retrofitService.updateSelectSeat(seatBookOrUseRequest)
+            .enqueue(object : Callback<SeatBookOrUseResponse> {
+                override fun onFailure(call: Call<SeatBookOrUseResponse>, t: Throwable) {
+                    //todo 실패처리
+
+                    Log.d("CustomDialog", "update seat onfailure: error by network!!!!!")
+                    Log.d("CustomDialog", t.toString())
+                }
+
+                override fun onResponse(
+                    call: Call<SeatBookOrUseResponse>,
+                    response: Response<SeatBookOrUseResponse>,
+                ) {
+                    //todo 성공처리
+
+                    if (response.isSuccessful.not()) {
+                        return
+                    }
+
+                    response.body()?.let {
+                        if (it.responseHttpStatus == 200 && it.responseCode == 2013) {
+
+                            // inuse가 false 이면 booked, true 이면 use
+                            onClickedListener.resultData(inuse)
+                            dialog.dismiss()
+
+                            Toast.makeText(activity,
+                                it.responseMessage,
+                                Toast.LENGTH_SHORT).show()
+                        } else {
+                            Log.d("CustomDialog", "update seat onfailure: error by server!!!!!")
+                            Log.d("CustomDialog",
+                                "httpStatus " + it.responseHttpStatus.toString())
+                            Log.d("CustomDialog", "responseCode " + it.responseCode.toString())
+                            Log.d("CustomDialog", "result " + it.result)
+                            Log.d("CustomDialog", "responseMessage" + it.responseMessage)
+
+                            Toast.makeText(activity,
+                                it.responseMessage,
+                                Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            })
+    }
 
 }
